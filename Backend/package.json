@@ -1,0 +1,16 @@
+{
+  "name": "codesync-backend",
+  "version": "1.0.0",
+  "description": "backend for collaborative code editor",
+  "license": "ISC",
+  "author": "mukul",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3"
+  }
+}
