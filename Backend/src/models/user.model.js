@@ -20,7 +20,7 @@ const userSchema =  new mongoose.Schema({
     description : {
         type : String
     },
-    passwordHash : {
+    password : {
         type : String,
         required : true
     },
@@ -58,15 +58,15 @@ userSchema.methods.generateRefreshToken = async ()=>{
 }
 
 userSchema.methods.isPasswordCorrect = async (password)=>{
-    return await bcrypt.compare(password , this.passwordHash);
+    return await bcrypt.compare(password , this.password);
 }
 
 
 
 userSchema.pre("save", async function(next) {
-    if(!this.isModified("passwordHash")) return next();
+    if(!this.isModified("password")) return next();
 
-    this.passwordHash = await bcrypt.hash(this.passwordHash, 10);
+    this.password = await bcrypt.hash(this.password, 10);
     next();
 });
 
