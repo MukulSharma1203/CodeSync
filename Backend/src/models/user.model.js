@@ -17,9 +17,6 @@ const userSchema =  new mongoose.Schema({
         lowercase : true,
         trim : true
     },
-    description : {
-        type : String
-    },
     passwordHash : {
         type : String,
         required : true
@@ -35,7 +32,7 @@ const userSchema =  new mongoose.Schema({
 } , {timestamps : true});
 
 
-userSchema.methods.generateAccessToken = async ()=>{
+userSchema.methods.generateAccessToken = async function(){
     return await jwt.sign({
         _id : this._id,
         username : this.username,
@@ -47,7 +44,7 @@ userSchema.methods.generateAccessToken = async ()=>{
     });
 }
 
-userSchema.methods.generateRefreshToken = async ()=>{
+userSchema.methods.generateRefreshToken = async function(){
     return await jwt.sign({
         _id : this._id
     },
@@ -57,7 +54,7 @@ userSchema.methods.generateRefreshToken = async ()=>{
     });
 }
 
-userSchema.methods.isPasswordCorrect = async (password)=>{
+userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password , this.passwordHash);
 }
 
