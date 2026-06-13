@@ -3,11 +3,10 @@ import bcrypt from 'bcrypt';
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { accessOptions, refreshOptions } from "../constants.js";
 
-//register
+//register --> working
 const userRegister = async (req, res)=>{
     try {
         const {email ,username, password } = req.body;
-
         //conditions
         if(!email){
             return res.status(400).json({
@@ -70,9 +69,8 @@ const userRegister = async (req, res)=>{
             avatar
         });
 
-        const accessToken = user.generateAccessToken();
-        const refreshToken = user.generateRefreshToken();
-
+        const refreshToken = await user.generateRefreshToken();
+        const accessToken = await user.generateAccessToken();
         user.refreshToken=refreshToken;
 
         await user.save({ validateBeforeSave: false });
@@ -91,6 +89,7 @@ const userRegister = async (req, res)=>{
 
     } 
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             success:false,
             message : "error in registering User"
@@ -98,7 +97,7 @@ const userRegister = async (req, res)=>{
     }
 }
 
-//login
+//login --> working
 const userLogin = async (req, res)=>{
     try {
         const {email,password} = req.body;
@@ -133,8 +132,8 @@ const userLogin = async (req, res)=>{
             })
         }
 
-        const accessToken = user.generateAccessToken();
-        const refreshToken = user.generateRefreshToken();
+        const accessToken = await user.generateAccessToken();
+        const refreshToken = await user.generateRefreshToken();
 
 
         user.refreshToken=refreshToken;
@@ -154,6 +153,7 @@ const userLogin = async (req, res)=>{
             });
     } 
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal server error"
@@ -161,7 +161,7 @@ const userLogin = async (req, res)=>{
     }
 }
 
-//logout
+//logout --> working
 const userLogout = async (req, res)=>{
     try {
         
@@ -191,6 +191,7 @@ const userLogout = async (req, res)=>{
 
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal server error"
@@ -198,7 +199,7 @@ const userLogout = async (req, res)=>{
     }
 }
 
-//getUser
+//getUser --> working
 const getCurrentUser = async (req, res)=>{
     try {
         const user = await User.findById(req.user._id).select("-passwordHash -refreshToken");
@@ -218,6 +219,7 @@ const getCurrentUser = async (req, res)=>{
         });
     } 
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal server error"

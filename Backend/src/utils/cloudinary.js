@@ -1,11 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import { unlinkSync } from "fs";
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-});
+import { existsSync, unlinkSync } from "fs";
 
 const uploadOnCloudinary = async (localFilePath) => {
     try {
@@ -15,13 +9,17 @@ const uploadOnCloudinary = async (localFilePath) => {
             resource_type : "auto"
         })
 
-        await unlinkSync(localFilePath);
+        if (localFilePath && existsSync(localFilePath)) {
+            unlinkSync(localFilePath);
+        }
         
         return response ;
         
     } catch (error) {
-        if(localFilePath){
-            await unlinkSync(localFilePath); // remove the locally saved temp file 
+        console.log(error);
+
+        if (localFilePath && existsSync(localFilePath)) {
+            unlinkSync(localFilePath); // remove the locally saved temp file 
         }
         return null
     }
