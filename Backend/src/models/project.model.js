@@ -41,4 +41,4 @@ const projectSchema = new Schema({
 projectSchema.index({ "collaborators.user": 1 });
 projectSchema.index({_id : 1 , "collaborators.user": 1 });
 
-export default mongoose.model("Project", projectSchema);
+export const Project = mongoose.model("Project", projectSchema);
