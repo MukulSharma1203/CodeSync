@@ -164,9 +164,17 @@ export const updateProject = async (req,res)=>{
 
 // join , leave , getprojects
 
+//working
 export const getUserProjects = async (req,res)=>{
     try {
-        
+        const userId = req.user._id;
+        const projects = await Project.find({
+            "collaborators.user":userId
+        }).populate("createdBy", "username avatar");
+        return res.status(200).json({
+            success: true,
+            projects
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -174,10 +182,47 @@ export const getUserProjects = async (req,res)=>{
         });
     }
 }
+
+
+//working
 
 export const joinProject = async (req,res)=>{
     try {
-        
+        const {inviteCode} = req.body;
+        const userId = req.user._id;
+        if(!inviteCode){
+            return res.status(400).json({
+                success:false , 
+                message:"InviteCode not found"
+            })
+        }
+
+        const project = await Project.findOneAndUpdate(
+            { inviteCode },
+            {
+                $addToSet: {
+                    collaborators: {
+                        user: userId,
+                        role: "viewer"
+                    }
+                }
+            },
+            { new: true }
+        );
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found"
+            });
+        }
+
+        res.status(200).json({
+            success:true,
+            message:"Joined project successfully"
+        })
+
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -186,9 +231,59 @@ export const joinProject = async (req,res)=>{
     }
 }
 
+//working
 export const leaveProject = async (req,res)=>{
     try {
+        const {projectId} = req.params;
+
+        if(!projectId){
+            return res.status(404).json({
+                success: false,
+                message: "ProjectId Required"
+            });
+        }
+        const userId = req.user._id;
         
+        const project = await Project.findById(projectId);
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found"
+            });
+        }
+
+        const isOwner = project.collaborators.some(
+            collaborator =>
+                collaborator.user.toString() === userId.toString() &&
+                collaborator.role === "owner"
+        );
+
+        if (isOwner) {
+            return res.status(400).json({
+                success: false,
+                message: "Owner can't leave project. Delete the project instead."
+            });
+        }
+
+        const updatedProject = await Project.findByIdAndUpdate(
+            projectId,
+            {
+                $pull: {
+                    collaborators: {
+                        user: userId
+                    }
+                }
+            },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Left project successfully",
+            project: updatedProject
+        });
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -196,3 +291,5 @@ export const leaveProject = async (req,res)=>{
         });
     }
 }
+
+//update role and delete collaborator

@@ -19,4 +19,7 @@ router.route("/get-user-project").get(verifyJWT,getUserProjects);
 router.route("/join-project").post(verifyJWT,joinProject);
 router.route("/leave-project/:projectId").delete(verifyJWT,leaveProject);
 
+router.route("/update-collaborator-role/:projectId/:collaboratorId").patch(verifyJWT, updateCollaboratorRole);
+router.route("/delete-collaborator/:projectId/:collaboratorId").delete(verifyJWT, deleteCollaborator);
+
 export default router;
