@@ -294,7 +294,9 @@ export const leaveProject = async (req,res)=>{
 
 //update role and delete collaborator
 
-const deleteCollaborator = async (req,res)=>{
+
+// working
+export const deleteCollaborator = async (req,res)=>{
     
     try {
         const {projectId , collaboratorId} = req.params;
@@ -370,7 +372,8 @@ const deleteCollaborator = async (req,res)=>{
     }
 };
 
-const updateCollaboratorRole = async (req,res)=>{
+//working
+export const updateCollaboratorRole = async (req,res)=>{
     try {
         const {projectId , collaboratorId} = req.params;
         const {role} = req.body;
