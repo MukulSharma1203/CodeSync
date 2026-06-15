@@ -293,3 +293,163 @@ export const leaveProject = async (req,res)=>{
 }
 
 //update role and delete collaborator
+
+const deleteCollaborator = async (req,res)=>{
+    
+    try {
+        const {projectId , collaboratorId} = req.params;
+        const userId = req.user._id;
+    
+        if(!projectId || !collaboratorId){
+            return res.status(404).json({
+                success:false,
+                message : "ProjectId and CollaboratorId are required"
+            })
+        }
+    
+        const project = await Project.findById(projectId);
+        if(!project){
+            return res.status(404).json({
+                success:false,
+                message:"Project not found"
+            })
+        }
+        const isOwner = project.collaborators.some(
+            collaborator=>
+                collaborator.user.toString() === userId.toString() && collaborator.role==="owner"
+        )
+    
+        if (!isOwner) {
+            return res.status(403).json({
+                success: false,
+                message: "Access Denied - Only owner can delete collaborators"
+            });
+        }
+    
+        if (collaboratorId.toString() === userId.toString()) {
+            return res.status(400).json({
+                success: false,
+                message: "Owner cannot delete himself"
+            });
+        }
+    
+        const targetCollaborator = await project.collaborators.find(
+            collaborator => collaborator.user.toString() === collaboratorId.toString()
+        )
+    
+        if(!targetCollaborator){
+            return res.status(404).json({
+                success:false,
+                message : "Collaborator not found"
+            })
+        }
+    
+        if(targetCollaborator.role ===  "owner"){
+            return res.status(400).json({
+                success: false,
+                message: "Owner cannot be deleted"
+            });
+        } //feels redundent , but issokay
+        
+        project.collaborators = project.collaborators.filter(
+            collaborator => collaborator.user.toString() !== collaboratorId.toString()
+        )
+    
+        await project.save();
+        
+        return res.status(200).json({
+            success: true,
+            message: "Collaborator deleted successfully",
+            project
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+const updateCollaboratorRole = async (req,res)=>{
+    try {
+        const {projectId , collaboratorId} = req.params;
+        const {role} = req.body;
+        const userId = req.user._id;
+
+        if(!projectId || !collaboratorId){
+            return res.status(404).json({
+                success:false,
+                message : "ProjectId and CollaboratorId are required"
+            })
+        }
+
+        if(!role){
+            return res.status(404).json({
+                success:false,
+                message:"Role is required"
+            })
+        }
+
+        if(!["viewer" , "editor"].includes(role)){
+            return res.status(400).json({
+                success:false,
+                message:"Invalid Role -> choose from viewer or editor"
+            })
+        }
+
+        const project = await Project.findById(projectId);
+
+        if(!project){
+            return res.status(404).json({
+                success:false,
+                message : "Project not found"
+            })
+        }
+
+        const isOwner = project.collaborators.some(
+            collaborator =>
+                collaborator.user.toString() === userId.toString() &&
+                collaborator.role === "owner"
+        );
+
+        if (!isOwner) {
+            return res.status(403).json({
+                success: false,
+                message: "Only owner can change collaborator roles"
+            });
+        }
+
+        const targetCollaborator = project.collaborators.find(
+            collaborator => collaborator.user.toString() === collaboratorId.toString()
+        );
+
+        if (!targetCollaborator) {
+            return res.status(404).json({
+                success: false,
+                message: "Collaborator not found"
+            });
+        }
+
+        if (targetCollaborator.role === "owner") {
+            return res.status(400).json({
+                success: false,
+                message: "Owner role cannot be changed"
+            });
+        }
+
+        targetCollaborator.role = role;
+        await project.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Collaborator role updated successfully",
+            project
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
