@@ -1,6 +1,6 @@
 import mongoose , {Schema} from "mongoose";
 
-const fileAndFolderSchema = new Schema({
+const fileFolderSchema = new Schema({
     name : {
         type : String,
         required : true
@@ -14,7 +14,7 @@ const fileAndFolderSchema = new Schema({
 
     parent : {
         type : Schema.Types.ObjectId,
-        ref : "FileAndFolder",
+        ref : "FileFolder",
         default : null
     },
 
@@ -50,4 +50,4 @@ fileAndFolderSchema.index(
 );
 
 
-export const FileFolder = mongoose.model("FileFolder", fileAndFolderSchema);
+export const FileFolder = mongoose.model("FileFolder", fileFolderSchema);

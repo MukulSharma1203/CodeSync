@@ -1,4 +1,5 @@
 import { Project } from "../models/project.model.js";
+import { FileFolder } from "../models/fileFolder.model.js";
 
 const generateCode = () => {
     const chars =
@@ -449,6 +450,95 @@ export const updateCollaboratorRole = async (req,res)=>{
             project
         });
 
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+//open project
+export const openProject = async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const userId = req.user._id;
+
+        if (!projectId) {
+            return res.status(400).json({
+                success: false,
+                message: "ProjectId is required"
+            });
+        }
+
+        const project = await Project.findById(projectId)
+            .populate("createdBy", "username email avatar")
+            .populate("collaborators.user", "username email avatar");
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found"
+            });
+        }
+
+        const collaborator = project.collaborators.find((c) => {
+            const collaboratorUserId = c.user?._id ? c.user._id.toString() : c.user.toString();
+            return collaboratorUserId === userId.toString();
+        });
+
+        if (!collaborator) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not a collaborator of this project"
+            });
+        }
+
+        // Fetch full node list for this project
+        const nodes = await FileFolder.find({ project: projectId })
+            .sort({ type: 1, name: 1, createdAt: 1 })
+            .lean();
+
+        // Build tree
+        const nodeMap = new Map();
+        for (const node of nodes) {
+            nodeMap.set(node._id.toString(), {
+                _id: node._id,
+                name: node.name,
+                type: node.type,
+                parent: node.parent,
+                language: node.language,
+                // keep content out of tree payload for performance
+                children: []
+            });
+        }
+
+        const tree = [];
+        for (const node of nodes) {
+            const current = nodeMap.get(node._id.toString());
+            const parentId = node.parent ? node.parent.toString() : null;
+
+            if (parentId && nodeMap.has(parentId)) {
+                nodeMap.get(parentId).children.push(current);
+            } else {
+                tree.push(current);
+            }
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Project opened successfully",
+            project: {
+                _id: project._id,
+                projectName: project.projectName,
+                projectDesc: project.projectDesc,
+                inviteCode: project.inviteCode,
+                createdBy: project.createdBy,
+                collaborators: project.collaborators,
+                yourRole: collaborator.role
+            },
+            tree
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,

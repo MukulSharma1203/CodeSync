@@ -6,6 +6,7 @@ import {
     getUserProjects,
     joinProject,
     leaveProject,
+    openProject,
     updateCollaboratorRole,
     updateProject
 } from "../controllers/dashboard.controller.js";
@@ -24,4 +25,5 @@ router.route("/leave-project/:projectId").delete(verifyJWT,leaveProject);
 router.route("/update-collaborator-role/:projectId/:collaboratorId").patch(verifyJWT, updateCollaboratorRole);
 router.route("/delete-collaborator/:projectId/:collaboratorId").delete(verifyJWT, deleteCollaborator);
 
+router.route("/open-project/:projectId").get(verifyJWT,openProject);
 export default router;
