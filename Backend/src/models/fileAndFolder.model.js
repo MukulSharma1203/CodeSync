@@ -50,4 +50,4 @@ fileAndFolderSchema.index(
 );
 
 
-export default mongoose.model("FileAndFolder", fileAndFolderSchema);
+export const FileFolder = mongoose.model("FileFolder", fileAndFolderSchema);
