@@ -1,14 +1,44 @@
-import { useState } from 'react'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Project from "./pages/Project";
+import NotFound from "./pages/NotFound";
+
+import useCurrentUser from "./hooks/useCurrentUser";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
-  const [count, setCount] = useState(0)
+    useCurrentUser();
 
-  return (
-    <>
-      {"hello"};
-    </>
-  )
+    return (
+        <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route
+                path="/dashboard"
+                element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/project/:projectId"
+                element={
+                    <ProtectedRoute>
+                        <Project />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    );
 }
 
-export default App
+export default App;
