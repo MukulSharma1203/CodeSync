@@ -14,9 +14,10 @@ app.use(cookieParser());
 
 import userRouter from "./routes/user.routes.js";
 import dashboardRouter from "./routes/dashboard.routes.js";
-
+import projectRouter from "./routes/project.routes.js";
 
 app.use('/api/users' , userRouter);
 app.use('/api/dashboard' , dashboardRouter);
+app.use('/api/project' , projectRouter);
 
 export default app;

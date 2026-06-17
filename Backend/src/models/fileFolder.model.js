@@ -42,9 +42,9 @@ const fileFolderSchema = new Schema({
 }, { timestamps : true });
 
 //indexing for faster finding and non duplicate files in same parent folder
-fileAndFolderSchema.index({ project: 1 });
-fileAndFolderSchema.index({ parent: 1 });
-fileAndFolderSchema.index(
+fileFolderSchema.index({ project: 1 });
+fileFolderSchema.index({ parent: 1 });
+fileFolderSchema.index(
     { project: 1, parent: 1, name: 1 },
     { unique: true }
 );
