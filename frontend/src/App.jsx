@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Project from "./pages/Project";
 import NotFound from "./pages/NotFound";
+import Landing from "./pages/Landing";
 
 import useCurrentUser from "./hooks/useCurrentUser";
 
@@ -14,6 +15,7 @@ function App() {
 
     return (
         <Routes>
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
