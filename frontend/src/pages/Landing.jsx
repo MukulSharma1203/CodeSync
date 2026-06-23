@@ -9,11 +9,12 @@ import {
   FaGithub,
   FaArrowRight,
 } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Landing() {
   const { user, setUser } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-
   const handleGetStarted = () => {
     navigate(user ? "/dashboard" : "/login");
   };
@@ -51,20 +52,33 @@ export default function Landing() {
             </div>
           ) : (
             <div className="user-menu">
-              <img src={user.avatar} alt="" className="avatar" />
+              <img
+                src={user.avatar}
+                alt=""
+                className="avatar"
+                onClick={() => setShowMenu((prev) => !prev)}
+              />
 
-              <div className="dropdown">
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="dropdown-item"
-                >
-                  Dashboard
-                </button>
+              {showMenu && (
+                <div className="dropdown">
+                  <button
+                    onClick={() => {
+                      navigate("/dashboard");
+                      setShowMenu(false);
+                    }}
+                    className="dropdown-item"
+                  >
+                    Dashboard
+                  </button>
 
-                <button onClick={handleLogout} className="dropdown-item logout">
-                  Logout
-                </button>
-              </div>
+                  <button
+                    onClick={handleLogout}
+                    className="dropdown-item logout"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -229,7 +243,9 @@ export default function Landing() {
             <p>Collaborative coding workspace.</p>
           </div>
 
-          <a href="https://github.com/MukulSharma1203/CodeSync"><FaGithub /></a>
+          <a href="https://github.com/MukulSharma1203/CodeSync">
+            <FaGithub />
+          </a>
         </div>
       </footer>
     </div>
