@@ -3,6 +3,8 @@ import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { FiPlus } from "react-icons/fi";
+import { FiZap, FiUsers, FiShare2 } from "react-icons/fi";
 
 function Register() {
   const { setUser } = useAuth();
@@ -103,12 +105,32 @@ function Register() {
           <div className="form-group">
             <label>Avatar</label>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setAvatar(e.target.files[0])}
-              required
-            />
+            <label className="avatar-upload">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setAvatar(e.target.files[0])}
+                required
+              />
+
+              <div className="avatar-circle">
+                {avatar ? (
+                  <img
+                    src={URL.createObjectURL(avatar)}
+                    alt="avatar preview"
+                    className="avatar-preview"
+                  />
+                ) : (
+                  <FiPlus />
+                )}
+              </div>
+
+              <span className="avatar-text">
+                {avatar ? avatar.name : "Click to upload"}
+              </span>
+
+              <span className="avatar-subtext">JPG, PNG up to 5MB</span>
+            </label>
           </div>
           <form className="register-form" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -175,18 +197,36 @@ function Register() {
 
         <div className="register-features">
           <div className="mini-feature">
-            <h3>Real-Time Collaboration</h3>
-            <p>Code together instantly.</p>
+            <div className="feature-icon">
+              <FiZap />
+            </div>
+
+            <div>
+              <h3>Real-Time Collaboration</h3>
+              <p>Code together instantly.</p>
+            </div>
           </div>
 
           <div className="mini-feature">
-            <h3>Role Management</h3>
-            <p>Owner, editor and viewer roles.</p>
+            <div className="feature-icon">
+              <FiUsers />
+            </div>
+
+            <div>
+              <h3>Role Management</h3>
+              <p>Owner, editor and viewer roles.</p>
+            </div>
           </div>
 
           <div className="mini-feature">
-            <h3>Project Sharing</h3>
-            <p>Invite teammates easily.</p>
+            <div className="feature-icon">
+              <FiShare2 />
+            </div>
+
+            <div>
+              <h3>Project Sharing</h3>
+              <p>Invite teammates easily.</p>
+            </div>
           </div>
         </div>
       </main>

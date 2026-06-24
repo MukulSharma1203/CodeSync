@@ -138,7 +138,7 @@ export default function Landing() {
 
             <div className="editor">
               <div className="tabs">
-                <span>App.jsx</span>
+                <span className = "active-tab">App.jsx</span>
                 <span>Dashboard.jsx</span>
               </div>
 
