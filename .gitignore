@@ -1,4 +1,6 @@
 Backend/node_modules
 Backend/.env
+Frontend/.env
+Frontend/node_modules
 .vscode/
 todo.txt
