@@ -1,0 +1,1675 @@
+/* =========================================================
+   THEME
+   ========================================================= */
+
+:root{
+
+    --bg:#161320;
+    --bg2:#1B1828;
+    --bg3:#221E31;
+
+    --surface:#242035;
+    --surface2:#2B2640;
+    --surface3:#332D4C;
+
+    --border:rgba(255,255,255,.08);
+
+    --text:#F5F2FF;
+    --text2:#C8C0E6;
+    --text3:#9089AF;
+
+    --purple:#8B5CF6;
+    --purple2:#6D4ED8;
+
+    --orange:#F38B62;
+    --orange2:#E46F3F;
+
+    --blue:#69A6FF;
+    --blue2:#467BEB;
+
+    --green:#5AD38E;
+
+    --red:#D85B72;
+    --red2:#BB405A;
+
+    --shadow:
+        0 20px 45px rgba(0,0,0,.45);
+
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.dashboard-page{
+
+    min-height:100vh;
+
+    background:
+
+        radial-gradient(
+            circle at top left,
+            rgba(139,92,246,.16),
+            transparent 26%
+        ),
+
+        radial-gradient(
+            circle at bottom right,
+            rgba(243,139,98,.08),
+            transparent 34%
+        ),
+
+        linear-gradient(
+            180deg,
+            var(--bg),
+            #13111d
+        );
+
+    color:var(--text);
+
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 48px;
+
+    backdrop-filter:blur(18px);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(34,30,49,.96),
+            rgba(22,19,32,.96)
+        );
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.logo{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+
+    text-decoration:none;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #d6c8ff
+        );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+.avatar{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    cursor:pointer;
+
+    border:2px solid rgba(255,255,255,.08);
+
+    transition:.28s;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.avatar:hover{
+
+    transform:scale(1.08);
+
+    border-color:var(--purple);
+
+    box-shadow:
+
+        0 0 30px rgba(139,92,246,.35);
+
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.dashboard-content{
+
+    width:min(1450px,92%);
+
+    margin:auto;
+
+    padding:60px 0 80px;
+
+}
+
+.dashboard-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:34px;
+
+}
+
+.dashboard-top h2{
+
+    font-size:62px;
+
+    font-weight:800;
+
+    letter-spacing:-1px;
+
+}
+
+.dashboard-actions{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+.dashboard-actions button{
+
+    padding:15px 28px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.28s;
+
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.join-btn{
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #2D2942,
+            #242035
+        );
+
+    color:white;
+
+    border:1px solid var(--border);
+
+}
+
+.join-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #37324d,
+            #2b2640
+        );
+
+}
+
+.create-btn{
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--orange),
+            var(--orange2)
+        );
+
+    color:white;
+
+    box-shadow:
+        0 10px 25px rgba(228,111,63,.25);
+
+}
+
+.create-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 16px 35px rgba(228,111,63,.35);
+
+}
+
+/* ========================================================= */
+
+.divider{
+
+    border:none;
+
+    height:1px;
+
+    background:var(--border);
+
+    margin-bottom:42px;
+
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.projects-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(auto-fill,minmax(370px,1fr));
+
+    gap:30px;
+
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.project-card{
+
+    background:
+
+        linear-gradient(
+            180deg,
+            var(--surface),
+            #1D1A2D
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    box-shadow:var(--shadow);
+
+    transition:.30s;
+
+}
+
+.project-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:
+
+        rgba(139,92,246,.30);
+
+    box-shadow:
+
+        0 30px 60px rgba(0,0,0,.45);
+
+}
+
+.project-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+}
+
+.project-header h3{
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+.project-header p{
+
+    color:var(--text2);
+
+    line-height:1.7;
+
+    min-height:60px;
+
+}
+/* =========================================================
+   PROJECT ACTION BUTTONS
+   ========================================================= */
+
+.project-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.edit-btn,
+.delete-btn,
+.danger-btn,
+.open-btn,
+.members-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:.28s;
+
+    border:none;
+
+    outline:none;
+
+}
+
+/* =========================================================
+   EDIT
+   ========================================================= */
+
+.edit-btn{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #8B5CF6,
+            #6D4ED8
+        );
+
+    box-shadow:
+
+        0 10px 20px rgba(109,78,216,.30);
+
+}
+
+.edit-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 18px 32px rgba(109,78,216,.40);
+
+}
+
+/* =========================================================
+   DELETE / LEAVE
+   ========================================================= */
+
+.delete-btn,
+.danger-btn{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #D85B72,
+            #BB405A
+        );
+
+    box-shadow:
+
+        0 10px 22px rgba(187,64,90,.30);
+
+}
+
+.delete-btn:hover,
+.danger-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 18px 34px rgba(187,64,90,.45);
+
+}
+
+/* =========================================================
+   MEMBERS BUTTON
+   ========================================================= */
+
+.project-members{
+
+    margin:22px 0;
+
+}
+
+.members-btn{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #302B46,
+            #26223A
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.members-btn:hover{
+
+    transform:translateY(-2px);
+
+    border-color:rgba(139,92,246,.45);
+
+    box-shadow:
+
+        0 0 24px rgba(139,92,246,.18);
+
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.project-footer{
+
+    margin-top:22px;
+
+    padding-top:20px;
+
+    border-top:1px solid rgba(255,255,255,.06);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+/* =========================================================
+   ROLE BADGE
+   ========================================================= */
+
+.project-role{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    text-transform:capitalize;
+
+    color:#F5F2FF;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(139,92,246,.22),
+            rgba(109,78,216,.18)
+        );
+
+    border:1px solid rgba(139,92,246,.25);
+
+}
+
+.project-role::before{
+
+    content:"";
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:#5AD38E;
+
+    box-shadow:
+
+        0 0 10px rgba(90,211,142,.5);
+
+}
+
+/* =========================================================
+   FOOTER BUTTONS
+   ========================================================= */
+
+.footer-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+/* =========================================================
+   OPEN PROJECT
+   ========================================================= */
+
+.open-btn{
+
+    padding:12px 20px;
+
+    border-radius:14px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #69A6FF,
+            #467BEB
+        );
+
+    box-shadow:
+
+        0 10px 24px rgba(70,123,235,.28);
+
+}
+
+.open-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 18px 36px rgba(70,123,235,.42);
+
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state{
+
+    padding:90px 30px;
+
+    text-align:center;
+
+    border-radius:26px;
+
+    border:1px dashed rgba(255,255,255,.08);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(36,32,53,.95),
+            rgba(29,26,45,.95)
+        );
+
+}
+
+.empty-state h2{
+
+    font-size:38px;
+
+    margin-bottom:16px;
+
+}
+
+.empty-state p{
+
+    color:var(--text2);
+
+    font-size:17px;
+
+}
+
+/* =========================================================
+   SVG ICONS
+   ========================================================= */
+
+.edit-btn svg,
+.delete-btn svg,
+.danger-btn svg,
+.members-btn svg,
+.open-btn svg{
+
+    font-size:15px;
+
+}
+
+/* =========================================================
+   MICRO ANIMATIONS
+   ========================================================= */
+
+button:active{
+
+    transform:scale(.96);
+
+}
+
+.project-card:hover .project-header h3{
+
+    color:#CDBBFF;
+
+}
+
+.project-card:hover .project-role{
+
+    border-color:rgba(139,92,246,.45);
+
+}
+/* =========================================================
+   MODAL OVERLAY
+   ========================================================= */
+
+.modal-overlay{
+
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        rgba(8,8,14,.72);
+
+    backdrop-filter:blur(12px);
+
+    animation:fadeIn .22s ease;
+
+    z-index:999;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal{
+
+    width:min(560px,92vw);
+
+    border-radius:26px;
+
+    padding:34px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #2A243D,
+            #1D1A2D
+        );
+
+    box-shadow:
+
+        0 35px 80px rgba(0,0,0,.55);
+
+    animation:popup .25s ease;
+}
+
+@keyframes popup{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(25px)
+            scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+.modal h2{
+
+    font-size:34px;
+
+    margin-bottom:28px;
+
+    font-weight:700;
+
+    color:white;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.modal form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.modal input,
+.modal textarea,
+.modal select{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:16px;
+
+    padding:16px 18px;
+
+    color:white;
+
+    font-size:15px;
+
+    transition:.25s;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #312B48,
+            #26213A
+        );
+
+    border:1px solid rgba(255,255,255,.06);
+
+}
+
+.modal textarea{
+
+    resize:vertical;
+
+    min-height:130px;
+
+}
+
+.modal input::placeholder,
+.modal textarea::placeholder{
+
+    color:#AFA6D6;
+
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus{
+
+    border-color:#8B5CF6;
+
+    box-shadow:
+
+        0 0 0 4px rgba(139,92,246,.15);
+
+}
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.modal select{
+
+    cursor:pointer;
+
+}
+
+.modal select option{
+
+    background:#26213A;
+
+    color:white;
+
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.modal-buttons{
+
+    margin-top:10px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+}
+
+.modal-buttons button{
+
+    padding:13px 24px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+/* ---------- PRIMARY ---------- */
+
+.modal-buttons button[type="submit"]{
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #8B5CF6,
+            #6D4ED8
+        );
+
+    box-shadow:
+
+        0 12px 26px rgba(109,78,216,.30);
+
+}
+
+.modal-buttons button[type="submit"]:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+        0 18px 34px rgba(109,78,216,.45);
+
+}
+
+/* ---------- SECONDARY ---------- */
+
+.modal-buttons button[type="button"]{
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #312B48,
+            #26213A
+        );
+
+    border:1px solid rgba(255,255,255,.06);
+
+}
+
+.modal-buttons button[type="button"]:hover{
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #393252,
+            #2D2844
+        );
+
+}
+
+/* =========================================================
+   AUTOFILL
+   ========================================================= */
+
+input:-webkit-autofill,
+textarea:-webkit-autofill{
+
+    -webkit-box-shadow:
+        0 0 0 1000px #26213A inset;
+
+    -webkit-text-fill-color:white;
+
+}
+
+/* =========================================================
+   HOVER EFFECT
+   ========================================================= */
+
+.modal input:hover,
+.modal textarea:hover,
+.modal select:hover{
+
+    border-color:
+
+        rgba(139,92,246,.25);
+
+}
+/* =========================================================
+   COLLABORATOR MODAL
+   ========================================================= */
+
+.members-modal{
+
+    width:min(760px,95vw);
+
+    max-height:82vh;
+
+    overflow-y:auto;
+
+}
+
+.member-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:18px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.member-row:last-child{
+
+    border-bottom:none;
+
+}
+
+/* =========================================================
+   MEMBER INFO
+   ========================================================= */
+
+.member-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    flex:1;
+
+}
+
+.member-avatar{
+
+    width:54px;
+
+    height:54px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,.08);
+
+    transition:.28s;
+
+    box-shadow:
+
+        0 8px 20px rgba(0,0,0,.30);
+
+}
+
+.member-avatar:hover{
+
+    transform:scale(1.08);
+
+    border-color:#8B5CF6;
+
+    box-shadow:
+
+        0 0 22px rgba(139,92,246,.28);
+
+}
+
+.member-info strong{
+
+    display:block;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.member-info p{
+
+    margin-top:4px;
+
+    color:#B7ADD9;
+
+    font-size:14px;
+
+    text-transform:capitalize;
+
+}
+
+/* =========================================================
+   MEMBER ACTIONS
+   ========================================================= */
+
+.member-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.member-actions select{
+
+    width:135px;
+
+    padding:12px 14px;
+
+    border-radius:14px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #312B48,
+            #26213A
+        );
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.25s;
+
+}
+
+.member-actions select:hover{
+
+    border-color:rgba(139,92,246,.35);
+
+}
+
+.member-actions button{
+
+    width:44px;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #D85B72,
+            #BB405A
+        );
+
+    box-shadow:
+
+        0 10px 24px rgba(187,64,90,.25);
+
+    transition:.28s;
+
+}
+
+.member-actions button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+        0 16px 34px rgba(187,64,90,.40);
+
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#191627;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    border-radius:999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #6D4ED8,
+            #8B5CF6
+        );
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #8B5CF6,
+            #B18DFF
+        );
+
+}
+
+/* =========================================================
+   TEXT SELECTION
+   ========================================================= */
+
+::selection{
+
+    background:rgba(139,92,246,.35);
+
+    color:white;
+
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1000px){
+
+    .dashboard-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:24px;
+
+    }
+
+    .dashboard-actions{
+
+        width:100%;
+
+    }
+
+    .dashboard-actions button{
+
+        flex:1;
+
+    }
+
+    .projects-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .dashboard-header{
+
+        padding:18px 20px;
+
+    }
+
+    .logo{
+
+        font-size:34px;
+
+    }
+
+    .dashboard-content{
+
+        width:94%;
+
+    }
+
+    .dashboard-top h2{
+
+        font-size:44px;
+
+    }
+
+    .project-header{
+
+        flex-direction:column;
+
+    }
+
+    .project-actions{
+
+        width:100%;
+
+        justify-content:flex-end;
+
+    }
+
+    .project-footer{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:16px;
+
+    }
+
+    .footer-buttons{
+
+        width:100%;
+
+    }
+
+    .open-btn{
+
+        width:100%;
+
+    }
+
+    .member-row{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .member-actions{
+
+        width:100%;
+
+    }
+
+    .member-actions select{
+
+        flex:1;
+
+    }
+
+}
+
+/* =========================================================
+   POLISH
+   ========================================================= */
+
+.project-card,
+.modal,
+button,
+input,
+textarea,
+select,
+.avatar,
+.member-avatar{
+
+    transition:
+        background .28s,
+        border-color .28s,
+        transform .28s,
+        box-shadow .28s,
+        color .28s;
+
+}
+
+.project-card:hover .project-header h3{
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #cdbbff
+        );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+.project-card:hover .members-btn{
+
+    border-color:rgba(139,92,246,.35);
+
+}
+
+.project-card:hover .project-role{
+
+    box-shadow:
+
+        0 0 20px rgba(139,92,246,.15);
+
+}
+
+.open-btn svg,
+.members-btn svg,
+.edit-btn svg,
+.delete-btn svg,
+.danger-btn svg{
+
+    font-size:16px;
+
+}
+
+.project-role{
+
+    letter-spacing:.4px;
+
+}
+
+.project-card{
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+.project-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:4px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #8B5CF6,
+            #F38B62
+        );
+
+    opacity:.9;
+
+}
+.role-buttons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.role-buttons button{
+
+    width:95px;
+
+    height:42px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    border:1px solid #8B5CF6;
+
+    background:transparent;
+
+    color:#E8E3FF;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.role-buttons button:hover{
+
+    border-color:#A67CFF;
+
+    background:rgba(139,92,246,.08);
+
+}
+
+/* Selected */
+
+.role-buttons .role-active{
+
+    background:
+        linear-gradient(
+            135deg,
+            #355BD8,
+            #2549C8
+        );
+
+    border-color:#355BD8;
+
+    color:white;
+
+    box-shadow:
+        0 8px 20px rgba(37,73,200,.35);
+
+}
+
+.role-buttons .role-active:hover{
+
+    background:
+        linear-gradient(
+            135deg,
+            #4067E8,
+            #2C52D8
+        );
+
+}
+.user-menu{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.profile-menu{
+
+    position:absolute;
+
+    top:70px;
+
+    right:0;
+
+    min-width:170px;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    z-index:1000;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            180deg,
+            #2B2640,
+            #221E31
+        );
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.45);
+
+}
+
+.profile-menu button{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border:none;
+
+    background:transparent;
+
+    color:#F5F2FF;
+
+    text-align:left;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.profile-menu button:hover{
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(216,91,114,.18),
+            rgba(216,91,114,.08)
+        );
+
+    color:#FF9DB0;
+
+}
