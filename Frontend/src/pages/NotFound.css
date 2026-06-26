@@ -1,0 +1,124 @@
+:root {
+  --bg: #161320;
+  --surface: #242035;
+  --surface2: #2b2640;
+
+  --text: #f5f2ff;
+  --text2: #c8c0e6;
+
+  --purple: #8b5cf6;
+  --purple2: #6d4ed8;
+
+  --orange: #f38b62;
+}
+
+.notfound-page {
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 40px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(139, 92, 246, 0.16),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(243, 139, 98, 0.1),
+      transparent 36%
+    ),
+    linear-gradient(180deg, #161320, #13111d);
+}
+
+.notfound-card {
+  width: min(600px, 100%);
+
+  text-align: center;
+
+  padding: 60px 50px;
+
+  border-radius: 32px;
+
+  background: linear-gradient(180deg, #242035, #1d1a2d);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+}
+
+.error-code {
+  font-size: 120px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  background: linear-gradient(135deg, #8b5cf6, #69a6ff, #f38b62);
+
+  -webkit-background-clip: text;
+
+  color: transparent;
+
+  margin-bottom: 10px;
+}
+
+.error-icon {
+  display: block;
+
+  margin: 0 auto 28px;
+
+  font-size: 58px;
+
+  color: #8b5cf6;
+}
+
+.notfound-card h1 {
+  color: white;
+
+  font-size: 42px;
+
+  margin-bottom: 18px;
+}
+
+.notfound-card p {
+  color: var(--text2);
+
+  line-height: 1.8;
+
+  margin-bottom: 40px;
+}
+
+.home-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  text-decoration: none;
+
+  color: white;
+
+  font-weight: 700;
+
+  padding: 16px 34px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, #8b5cf6, #6d4ed8);
+
+  transition: 0.3s;
+}
+
+.home-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 18px 40px rgba(109, 78, 216, 0.42);
+}
