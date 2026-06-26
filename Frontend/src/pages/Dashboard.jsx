@@ -367,7 +367,24 @@ function Dashboard() {
                   </div>
 
                   <div className="project-footer">
-                    <span className="project-role">{myCollaborator?.role}</span>
+                    <div>
+                      <span className="project-role">
+                        {myCollaborator?.role}
+                      </span>
+
+                      {isOwner && (
+                        <div
+                          className="invite-code"
+                          onClick={() => {
+                            navigator.clipboard.writeText(project.inviteCode);
+                            alert("Invite code copied!");
+                          }}
+                          title="Click to copy"
+                        >
+                          {project.inviteCode}
+                        </div>
+                      )}
+                    </div>
 
                     <div className="footer-buttons">
                       <button
@@ -499,7 +516,7 @@ function Dashboard() {
                       className="member-avatar"
                     />
 
-                    <div>
+                    <div className="member-text">
                       <strong>{member.user.username}</strong>
 
                       <p>{member.role}</p>

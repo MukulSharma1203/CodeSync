@@ -1,0 +1,453 @@
+/* ===========================
+   PAGE
+=========================== */
+
+.project-page {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    radial-gradient(circle at top left, #3a2f58 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #4d2c43 0%, transparent 40%),
+    #1e1e2e;
+
+  color: #cdd6f4;
+
+  overflow: hidden;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.editor-header {
+  height: 70px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 28px;
+
+  background: linear-gradient(180deg, #313244, #262637);
+
+  border-bottom: 1px solid #45475a;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.project-header h1 {
+  font-size: 30px;
+
+  color: #f5e0dc;
+}
+
+/* ===========================
+   TOOLBAR
+=========================== */
+
+.project-toolbar {
+  display: flex;
+
+  gap: 14px;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #6c5ce7, #5a4bcf);
+
+  color: white;
+
+  font-weight: 600;
+
+  transition: 0.25s;
+}
+
+.toolbar-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 20px rgba(108, 92, 231, 0.35);
+}
+
+/* ===========================
+   BODY
+=========================== */
+
+.project-body {
+  flex: 1;
+
+  display: grid;
+
+  grid-template-columns: 300px 1fr;
+
+  overflow: hidden;
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.file-sidebar {
+  background: linear-gradient(180deg, #24273a, #1f2030);
+
+  border-right: 1px solid #45475a;
+
+  overflow: auto;
+
+  padding: 18px;
+}
+
+.sidebar-title {
+  font-size: 14px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  color: #89b4fa;
+
+  margin-bottom: 20px;
+
+  font-weight: 700;
+}
+
+/* ===========================
+   TREE
+=========================== */
+
+.tree-node {
+  margin-left: 8px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 9px 12px;
+
+  margin-bottom: 5px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.tree-item:hover {
+  background: #313244;
+}
+
+.selected-folder {
+  background: linear-gradient(135deg, #45475a, #585b70);
+
+  border: 1px solid #89b4fa;
+}
+
+.folder-icon {
+  color: #f9e2af;
+}
+
+.file-icon {
+  color: #89b4fa;
+}
+
+.tree-children {
+  margin-left: 22px;
+
+  border-left: 1px solid #45475a;
+
+  padding-left: 12px;
+}
+
+/* ===========================
+   EDITOR
+=========================== */
+
+.editor-panel {
+  flex: 1;
+
+  display: flex;
+
+  overflow: hidden;
+
+  min-width: 0;
+}
+
+.editor-placeholder {
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background: #24273a;
+
+  border-left: 1px solid #45475a;
+}
+
+.editor-placeholder h2 {
+  color: #f5c2e7;
+
+  margin-bottom: 12px;
+}
+
+.editor-placeholder p {
+  color: #a6adc8;
+}
+
+/* ===========================
+   MODAL
+=========================== */
+
+.project-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  backdrop-filter: blur(8px);
+
+  z-index: 1000;
+}
+
+.project-modal {
+  width: 420px;
+
+  padding: 28px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(180deg, #313244, #24273a);
+
+  border: 1px solid #585b70;
+
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+}
+
+.project-modal h2 {
+  margin-bottom: 22px;
+
+  color: #f5e0dc;
+}
+
+.project-modal input,
+.project-modal select {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  margin-bottom: 18px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #1e1e2e;
+
+  color: #cdd6f4;
+
+  border: 1px solid #585b70;
+
+  font-size: 15px;
+}
+
+.project-modal input:focus,
+.project-modal select:focus {
+  outline: none;
+
+  border-color: #89b4fa;
+}
+
+.project-modal-buttons {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+}
+
+.project-modal-buttons button {
+  padding: 10px 20px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: 0.2s;
+}
+
+.project-modal-buttons button:first-child {
+  background: linear-gradient(135deg, #89b4fa, #74a3f4);
+
+  color: #11111b;
+}
+
+.project-modal-buttons button:last-child {
+  background: #313244;
+
+  color: #cdd6f4;
+}
+
+.project-modal-buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.tree-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.tree-name {
+  flex: 1;
+}
+
+.tree-actions {
+  display: flex;
+
+  gap: 10px;
+
+  opacity: 0;
+
+  transition: 0.2s;
+}
+
+.tree-item:hover .tree-actions {
+  opacity: 1;
+}
+
+.tree-action {
+  cursor: pointer;
+
+  color: #b8b8c9;
+
+  transition: 0.2s;
+}
+
+.tree-action:hover {
+  color: #8b5cf6;
+}
+
+.tree-action.delete:hover {
+  color: #ef4444;
+}
+.editor-area {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.editor-topbar {
+  height: 55px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 20px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.editor-topbar button {
+  padding: 8px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #8b5cf6;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.code-editor {
+  flex: 1;
+
+  resize: none;
+
+  border: none;
+
+  outline: none;
+
+  padding: 20px;
+
+  background: #161622;
+
+  color: white;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 15px;
+}
+
+.monaco-container {
+  flex: 1;
+
+  width: 100%;
+
+  min-width: 0;
+
+  overflow: hidden;
+}
+.python-icon {
+  color: #FFD43B;
+}
+
+.cpp-icon {
+  color: #4EA1FF;
+}
+
+.java-icon {
+  color: #F89820;
+}
+
+.js-icon {
+  color: #F7DF1E;
+}
+
+.file-icon {
+  font-size: 15px;
+}
