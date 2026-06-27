@@ -433,21 +433,83 @@
   overflow: hidden;
 }
 .python-icon {
-  color: #FFD43B;
+  color: #ffd43b;
 }
 
 .cpp-icon {
-  color: #4EA1FF;
+  color: #4ea1ff;
 }
 
 .java-icon {
-  color: #F89820;
+  color: #f89820;
 }
 
 .js-icon {
-  color: #F7DF1E;
+  color: #f7df1e;
 }
 
 .file-icon {
   font-size: 15px;
 }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.online-users {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+.online-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  background: #fff;
+  margin-left: -10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.online-avatar:hover {
+  transform: translateY(-2px);
+  margin-left: 0;
+  z-index: 100;
+}
+
+.online-avatar:first-child {
+  margin-left: 0;
+}
+
+.dashboard-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #a73030, #e05307);
+
+  color: white;
+
+  font-weight: 600;
+
+  transition: 0.25s;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 0px 20px rgba(189, 70, 70, 0.681);
+}
+

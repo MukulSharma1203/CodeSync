@@ -1,10 +1,10 @@
 import "./Project.css";
 import Editor from "@monaco-editor/react";
 import api from "../api/axios";
-
+import socket from "../socket";
 import { useEffect, useState } from "react";
-
-import { useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   FaFolder,
@@ -12,12 +12,15 @@ import {
   FaFileCirclePlus,
   FaPen,
   FaTrash,
+  FaArrowLeft,
 } from "react-icons/fa6";
 
 import { SiPython, SiCplusplus, SiJavascript, SiOpenjdk } from "react-icons/si";
 
 function Project() {
   const { projectId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [loading, setLoading] = useState(true);
 
@@ -51,6 +54,8 @@ function Project() {
 
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
   const fetchTree = async () => {
     try {
       const res = await api.get(`/project/get-folder-tree/${projectId}`);
@@ -65,7 +70,77 @@ function Project() {
 
   useEffect(() => {
     fetchTree();
+  }, [projectId]);
+
+  useEffect(() => {
+    socket.emit("join-project", {
+      projectId,
+      userId: user._id,
+    });
+
+    return () => {
+      socket.emit("leave-project");
+    };
+  }, [projectId, user]);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      socket.emit("leave-project");
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, [projectId]);
+
+  useEffect(() => {
+    const handleOnlineUsers = (users) => {
+      setOnlineUsers(users);
+    };
+
+    socket.on("online-users", handleOnlineUsers);
+
+    return () => {
+      socket.off("online-users", handleOnlineUsers);
+    };
   }, []);
+
+  useEffect(() => {
+    const refreshTree = (data) => {
+      console.log("Socket event received:", data);
+      fetchTree();
+    };
+
+    socket.on("folder-created", refreshTree);
+    socket.on("file-created", refreshTree);
+    socket.on("item-renamed", refreshTree);
+    socket.on("item-deleted", refreshTree);
+
+    return () => {
+      socket.off("folder-created", refreshTree);
+      socket.off("file-created", refreshTree);
+      socket.off("item-renamed", refreshTree);
+      socket.off("item-deleted", refreshTree);
+    };
+  }, [projectId]);
+
+  useEffect(() => {
+    const handleIncomingCode = (data) => {
+      console.log("Incoming code:", data);
+
+      if (selectedFile && data.fileId === selectedFile._id) {
+        setFileContent(data.content);
+      }
+    };
+
+    socket.on("code-change", handleIncomingCode);
+
+    return () => {
+      socket.off("code-change", handleIncomingCode);
+    };
+  }, [selectedFile]);
 
   const handleCreateFolder = async (e) => {
     e.preventDefault();
@@ -176,6 +251,20 @@ function Project() {
     }
   };
 
+  const handleEditorChange = (value) => {
+    const content = value || "";
+
+    setFileContent(content);
+
+    if (!selectedFile) return;
+
+    socket.emit("code-change", {
+      projectId,
+      fileId: selectedFile._id,
+      content,
+    });
+  };
+
   const toggleFolder = (folderId) => {
     setExpandedFolders((prev) => {
       const next = new Set(prev);
@@ -258,31 +347,50 @@ function Project() {
   return (
     <div className="project-page">
       <header className="editor-header">
+        <button className="toolbar-btn dashboard-btn" onClick={() => navigate("/dashboard")}>
+          <FaArrowLeft />
+          Dashboard
+        </button>
+
         <h1>CodeSync</h1>
 
-        <div className="project-toolbar">
-          <button
-            className="toolbar-btn"
-            onClick={() => {
-              setFolderName("");
-              setShowFolderModal(true);
-            }}
-          >
-            <FaFolderPlus />
-            Folder
-          </button>
+        <div className="header-right">
+          <div className="online-users">
+            {onlineUsers.map((member) => (
+              <img
+                key={member._id}
+                src={member.avatar}
+                alt={member.username}
+                title={member.username}
+                className="online-avatar"
+              />
+            ))}
+          </div>
 
-          <button
-            className="toolbar-btn"
-            onClick={() => {
-              setFileName("");
-              setLanguage("cpp");
-              setShowFileModal(true);
-            }}
-          >
-            <FaFileCirclePlus />
-            File
-          </button>
+          <div className="project-toolbar">
+            <button
+              className="toolbar-btn"
+              onClick={() => {
+                setFolderName("");
+                setShowFolderModal(true);
+              }}
+            >
+              <FaFolderPlus />
+              Folder
+            </button>
+
+            <button
+              className="toolbar-btn"
+              onClick={() => {
+                setFileName("");
+                setLanguage("cpp");
+                setShowFileModal(true);
+              }}
+            >
+              <FaFileCirclePlus />
+              File
+            </button>
+          </div>
         </div>
       </header>
 
@@ -314,7 +422,7 @@ function Project() {
                     width="100%"
                     language={editorLanguage}
                     value={fileContent}
-                    onChange={(value) => setFileContent(value || "")}
+                    onChange={handleEditorChange}
                     theme="vs-dark"
                     options={{
                       fontSize: 15,

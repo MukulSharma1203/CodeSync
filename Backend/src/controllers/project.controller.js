@@ -1,4 +1,5 @@
 import { FileFolder } from "../models/fileFolder.model.js";
+import { getIO, getLiveFiles } from "../utils/socket.js";
 
 //createFolder
 export const createFolder = async (req, res) => {
@@ -51,6 +52,8 @@ export const createFolder = async (req, res) => {
       project: projectId,
       createdBy: userId,
     });
+    
+    getIO().to(projectId.toString()).emit("folder-created", folder);
 
     return res.status(201).json({
       success: true,
@@ -118,6 +121,8 @@ export const createFile = async (req, res) => {
       language: language || null,
       createdBy: userId,
     });
+    
+    getIO().to(projectId.toString()).emit("file-created", file);
 
     return res.status(201).json({
       success: true,
@@ -187,6 +192,8 @@ export const renameFileFolder = async (req, res) => {
     }
 
     await fileFolder.save();
+    
+    getIO().to(projectId.toString()).emit("item-renamed", fileFolder);
 
     return res.status(200).json({
       success: true,
@@ -247,6 +254,10 @@ export const deleteFileFolder = async (req, res) => {
     await FileFolder.deleteOne({
       _id: target._id,
       project: projectId,
+    });
+    
+    getIO().to(projectId.toString()).emit("item-deleted", {
+      _id: target._id,
     });
 
     return res.status(200).json({
@@ -329,6 +340,12 @@ export const getFileContent = async (req, res) => {
       });
     }
 
+    const liveFiles = getLiveFiles();
+
+    if (liveFiles.has(fileId)) {
+      file.content = liveFiles.get(fileId);
+    }
+
     return res.status(200).json({
       success: true,
       file,
@@ -381,6 +398,12 @@ export const saveFileContent = async (req, res) => {
     }
 
     await file.save();
+    
+    getIO().to(projectId.toString()).emit("file-saved", {
+      _id: file._id,
+      content: file.content,
+      language: file.language,
+    });
 
     return res.status(200).json({
       success: true,

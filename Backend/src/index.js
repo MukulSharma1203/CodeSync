@@ -1,24 +1,32 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET,
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 import connectDB from "./db/index.js";
-import app from './app.js';
+import app from "./app.js";
+import http from "http";
+import { initializeSocket } from "./utils/socket.js";
+
 
 connectDB()
-.then(()=>{
+  .then(() => {
     const port = process.env.PORT;
-    app.listen(port , ()=>{
-        console.log(`serving at "localhost:${port}"`);
-    })
-})
-.catch((err)=>{
-    console.log("Error While Connecting to DB : " , err);
-})
+
+    const server = http.createServer(app);
+
+    initializeSocket(server);
+
+    server.listen(port, () => {
+      console.log(`serving at "localhost:${port}"`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error While Connecting to DB : ", err);
+  });
