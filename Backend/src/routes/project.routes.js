@@ -9,8 +9,10 @@ import {
     deleteFileFolder,
     getFolderTree,
     getFileContent,
-    saveFileContent
+    saveFileContent,
 } from "../controllers/project.controller.js";
+
+import { runFile } from "../controllers/run.controller.js";
 
 const router = Router();
 
@@ -24,5 +26,6 @@ router.route("/delete-file-folder/:projectId/:fileId").delete(verifyJWT , permit
 router.route("/get-folder-tree/:projectId").get(verifyJWT , permittedUserRole("owner" , "editor","viewer"),getFolderTree);
 router.route("/get-file-content/:projectId/:fileId").get(verifyJWT , permittedUserRole("owner" , "editor" , "viewer"),getFileContent);
 router.route("/save-file-content/:projectId/:fileId").post(verifyJWT , permittedUserRole("owner" , "editor"),saveFileContent);
+router.route("/run-file/:projectId/:fileId").post(verifyJWT,permittedUserRole("owner", "editor", "viewer"),runFile);
 
 export default router;

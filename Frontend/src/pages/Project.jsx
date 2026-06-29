@@ -55,6 +55,9 @@ function Project() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [terminalInput, setTerminalInput] = useState("");
+  const [terminalOutput, setTerminalOutput] = useState("");
+  const [running, setRunning] = useState(false);
 
   const fetchTree = async () => {
     try {
@@ -251,6 +254,32 @@ function Project() {
     }
   };
 
+  const handleRun = async () => {
+    if (!selectedFile) return;
+
+    setRunning(true);
+
+    try {
+      const res = await api.post(
+        `/project/run-file/${projectId}/${selectedFile._id}`,
+        {
+          input: terminalInput,
+        },
+      );
+
+      setTerminalOutput(
+        res.data.output ||
+          res.data.stdout ||
+          res.data.stderr ||
+          "Program finished.",
+      );
+    } catch (error) {
+      setTerminalOutput(error.response?.data?.message || "Execution failed.");
+    }
+
+    setRunning(false);
+  };
+
   const handleEditorChange = (value) => {
     const content = value || "";
 
@@ -347,7 +376,10 @@ function Project() {
   return (
     <div className="project-page">
       <header className="editor-header">
-        <button className="toolbar-btn dashboard-btn" onClick={() => navigate("/dashboard")}>
+        <button
+          className="toolbar-btn dashboard-btn"
+          onClick={() => navigate("/dashboard")}
+        >
           <FaArrowLeft />
           Dashboard
         </button>
@@ -413,25 +445,47 @@ function Project() {
                 <div className="editor-topbar">
                   <span>{selectedFile.name}</span>
 
-                  <button onClick={handleSaveFile}>Save</button>
+                  <div className="editor-buttons">
+                    <button onClick={handleSaveFile}>Save</button>
+
+                    <button onClick={handleRun} disabled={running}>
+                      {running ? "Running..." : "Run ▶"}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="monaco-container">
-                  <Editor
-                    height="100%"
-                    width="100%"
-                    language={editorLanguage}
-                    value={fileContent}
-                    onChange={handleEditorChange}
-                    theme="vs-dark"
-                    options={{
-                      fontSize: 15,
-                      minimap: { enabled: false },
-                      automaticLayout: true,
-                      wordWrap: "on",
-                      scrollBeyondLastLine: false,
-                    }}
-                  />
+                  <div className="monaco-editor-wrapper">
+                    <Editor
+                      height="100%"
+                      width="100%"
+                      language={editorLanguage}
+                      value={fileContent}
+                      onChange={handleEditorChange}
+                      theme="vs-dark"
+                      options={{
+                        fontSize: 15,
+                        minimap: { enabled: false },
+                        automaticLayout: true,
+                        wordWrap: "on",
+                        scrollBeyondLastLine: false,
+                      }}
+                    />
+                  </div>
+                  <div className="terminal-panel">
+                    <div className="terminal-header">Terminal</div>
+
+                    <textarea
+                      className="terminal-input"
+                      placeholder="Program Input (stdin)"
+                      value={terminalInput}
+                      onChange={(e) => setTerminalInput(e.target.value)}
+                    />
+
+                    <pre className="terminal-output">
+                      {terminalOutput || "Program output will appear here..."}
+                    </pre>
+                  </div>
                 </div>
               </div>
             ) : (

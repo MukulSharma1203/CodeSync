@@ -1,6 +1,6 @@
 import { FileFolder } from "../models/fileFolder.model.js";
 import { getIO, getLiveFiles } from "../utils/socket.js";
-
+import axios from "axios";
 //createFolder
 export const createFolder = async (req, res) => {
   try {
@@ -52,7 +52,7 @@ export const createFolder = async (req, res) => {
       project: projectId,
       createdBy: userId,
     });
-    
+
     getIO().to(projectId.toString()).emit("folder-created", folder);
 
     return res.status(201).json({
@@ -121,7 +121,7 @@ export const createFile = async (req, res) => {
       language: language || null,
       createdBy: userId,
     });
-    
+
     getIO().to(projectId.toString()).emit("file-created", file);
 
     return res.status(201).json({
@@ -192,7 +192,7 @@ export const renameFileFolder = async (req, res) => {
     }
 
     await fileFolder.save();
-    
+
     getIO().to(projectId.toString()).emit("item-renamed", fileFolder);
 
     return res.status(200).json({
@@ -255,7 +255,7 @@ export const deleteFileFolder = async (req, res) => {
       _id: target._id,
       project: projectId,
     });
-    
+
     getIO().to(projectId.toString()).emit("item-deleted", {
       _id: target._id,
     });
@@ -398,7 +398,7 @@ export const saveFileContent = async (req, res) => {
     }
 
     await file.save();
-    
+
     getIO().to(projectId.toString()).emit("file-saved", {
       _id: file._id,
       content: file.content,
@@ -414,6 +414,85 @@ export const saveFileContent = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
+    });
+  }
+};
+
+export const runFile = async (req, res) => {
+  try {
+    const projectId = req.project._id;
+    const { fileId } = req.params;
+    const { input = "" } = req.body;
+
+    const file = await FileFolder.findOne({
+      _id: fileId,
+      project: projectId,
+      type: "file",
+    });
+
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      });
+    }
+
+    const languageMap = {
+      cpp: {
+        language: "c++",
+        version: "10.2.0",
+      },
+      python: {
+        language: "python",
+        version: "3.10.0",
+      },
+      java: {
+        language: "java",
+        version: "15.0.2",
+      },
+      javascript: {
+        language: "javascript",
+        version: "18.15.0",
+      },
+    };
+
+    const runtime = languageMap[file.language];
+
+    if (!runtime) {
+      return res.status(400).json({
+        success: false,
+        message: "Unsupported language",
+      });
+    }
+
+    const response = await axios.post(
+      "https://emkc.org/api/v2/piston/execute",
+      {
+        language: runtime.language,
+        version: runtime.version,
+        files: [
+          {
+            name: file.name,
+            content: file.content || "",
+          },
+        ],
+        stdin: input,
+      },
+    );
+
+    console.log(response.data);
+
+    return res.status(200).json({
+      success: true,
+      output: response.data.run.output,
+      stdout: response.data.run.stdout,
+      stderr: response.data.run.stderr,
+      code: response.data.run.code,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Execution failed",
     });
   }
 };
