@@ -99,7 +99,6 @@ const userRegister = async (req, res) => {
         user: createdUser,
       });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "error in registering User",
@@ -163,7 +162,6 @@ const userLogin = async (req, res) => {
         user: loggedInUser,
       });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -195,7 +193,6 @@ const userLogout = async (req, res) => {
         message: "Logged out successfully",
       });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -216,15 +213,11 @@ const getCurrentUser = async (req, res) => {
         message: "User not found",
       });
     }
-
-    // console.log("current user = ", user);
-
     return res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
