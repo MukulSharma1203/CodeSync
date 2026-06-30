@@ -5,6 +5,7 @@ import socket from "../socket";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import {
   FaFolder,
@@ -65,7 +66,7 @@ function Project() {
 
       setTree(res.data.tree);
     } catch (error) {
-      console.log(error);
+      toast.error("Couldn't load project");
     } finally {
       setLoading(false);
     }
@@ -112,7 +113,6 @@ function Project() {
 
   useEffect(() => {
     const refreshTree = (data) => {
-      console.log("Socket event received:", data);
       fetchTree();
     };
 
@@ -131,8 +131,6 @@ function Project() {
 
   useEffect(() => {
     const handleIncomingCode = (data) => {
-      console.log("Incoming code:", data);
-
       if (selectedFile && data.fileId === selectedFile._id) {
         setFileContent(data.content);
       }
@@ -160,8 +158,9 @@ function Project() {
       setShowFolderModal(false);
 
       fetchTree();
+      toast.success("Folder created");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -183,8 +182,9 @@ function Project() {
       setShowFileModal(false);
 
       fetchTree();
+      toast.success("File created");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -203,8 +203,9 @@ function Project() {
       setShowRenameModal(false);
 
       fetchTree();
+      toast.success("Rename Successfully");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -215,8 +216,9 @@ function Project() {
       await api.delete(`/project/delete-file-folder/${projectId}/${itemId}`);
 
       fetchTree();
+      toast.success("Deleted Successfully");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -232,7 +234,7 @@ function Project() {
 
       setEditorLanguage(res.data.file.language || "plaintext");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -248,9 +250,9 @@ function Project() {
         },
       );
 
-      alert("Saved");
+      toast.success("File saved successfully");
     } catch (error) {
-      alert(error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 

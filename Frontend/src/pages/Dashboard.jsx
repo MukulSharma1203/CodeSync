@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaTrash, FaPen, FaSignInAlt, FaUsers, FaTimes } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function Dashboard() {
   const { user, setUser } = useAuth();
@@ -47,7 +48,7 @@ function Dashboard() {
 
       setProjects(response.data.projects);
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to load projects");
     } finally {
       setLoading(false);
     }
@@ -61,7 +62,7 @@ function Dashboard() {
     try {
       await api.post("/users/logout");
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message || "Logout failed");
     } finally {
       setShowProfileMenu(false);
       setUser(null);

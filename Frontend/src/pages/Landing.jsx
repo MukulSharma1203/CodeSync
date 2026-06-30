@@ -10,6 +10,7 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Landing() {
   const { user, setUser } = useAuth();
@@ -23,7 +24,7 @@ export default function Landing() {
     try {
       await api.post("/users/logout");
     } catch (err) {
-      console.log(err);
+      toast.error(error.response?.data?.message || "Logout failed");
     } finally {
       setUser(null);
       navigate("/");
@@ -138,7 +139,7 @@ export default function Landing() {
 
             <div className="editor">
               <div className="tabs">
-                <span className = "active-tab">App.jsx</span>
+                <span className="active-tab">App.jsx</span>
                 <span>Dashboard.jsx</span>
               </div>
 
