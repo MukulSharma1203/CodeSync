@@ -11,6 +11,21 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.09, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.09 } },
+};
 
 export default function Landing() {
   const { user, setUser } = useAuth();
@@ -24,18 +39,43 @@ export default function Landing() {
     try {
       await api.post("/users/logout");
     } catch (err) {
-      toast.error(error.response?.data?.message || "Logout failed");
+      toast.error(err.response?.data?.message || "Logout failed");
     } finally {
       setUser(null);
       navigate("/");
     }
   };
 
+  const features = [
+    {
+      icon: <FaFolderOpen />,
+      title: "Project Management",
+      desc: "Create projects, organize folders and files, and keep everything structured.",
+      accent: "violet",
+    },
+    {
+      icon: <FaUsers />,
+      title: "Team Collaboration",
+      desc: "Invite teammates and manage viewer, editor and owner permissions.",
+      accent: "cyan",
+    },
+    {
+      icon: <FaCode />,
+      title: "Real-Time Coding",
+      desc: "Edit files together with live synchronization and collaborative workflows.",
+      accent: "fuchsia",
+    },
+  ];
+
   return (
     <div className="landing-page">
       {/* HEADER */}
-
-      <header className="header">
+      <motion.header
+        className="header"
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="header-container">
           <Link to="/" className="logo">
             CodeSync
@@ -60,47 +100,63 @@ export default function Landing() {
                 onClick={() => setShowMenu((prev) => !prev)}
               />
 
-              {showMenu && (
-                <div className="dropdown">
-                  <button
-                    onClick={() => {
-                      navigate("/dashboard");
-                      setShowMenu(false);
-                    }}
-                    className="dropdown-item"
+              <AnimatePresence>
+                {showMenu && (
+                  <motion.div
+                    className="dropdown"
+                    initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                    transition={{ duration: 0.18 }}
                   >
-                    Dashboard
-                  </button>
+                    <button
+                      onClick={() => {
+                        navigate("/dashboard");
+                        setShowMenu(false);
+                      }}
+                      className="dropdown-item"
+                    >
+                      Dashboard
+                    </button>
 
-                  <button
-                    onClick={handleLogout}
-                    className="dropdown-item logout"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+                    <button
+                      onClick={handleLogout}
+                      className="dropdown-item logout"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
         </div>
-      </header>
+      </motion.header>
 
       {/* HERO */}
       <div className="hero-content">
-        <section className="hero">
-          <div className="hero-badge">Real-Time Collaborative Coding</div>
+        <motion.section
+          className="hero"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div className="hero-badge" variants={fadeUp}>
+            <span className="badge-dot" />
+            Real-Time Collaborative Coding
+          </motion.div>
 
-          <h1 className="hero-title">
+          <motion.h1 className="hero-title" variants={fadeUp}>
             Build Together.
-            <span>Code Faster.</span>
-          </h1>
+            <span className="grad-text">Code Faster.</span>
+          </motion.h1>
 
-          <p className="hero-description">
+          <motion.p className="hero-description" variants={fadeUp}>
             Create projects, invite teammates, manage roles, and build software
             together inside a modern collaborative coding workspace.
-          </p>
+          </motion.p>
 
-          <div className="hero-actions">
+          <motion.div className="hero-actions" variants={fadeUp}>
             <button onClick={handleGetStarted} className="btn-primary">
               Get Started
               <FaArrowRight />
@@ -109,17 +165,42 @@ export default function Landing() {
             <a href="#features" className="btn-secondary">
               Learn More
             </a>
-          </div>
-        </section>
-      </div>
-      {/* IDE PREVIEW */}
+          </motion.div>
 
-      <section className="ide-preview">
+          <motion.div className="hero-stats" variants={fadeUp}>
+            <div className="stat">
+              <strong>Live</strong>
+              <span>Sync engine</span>
+            </div>
+            <div className="stat-divider" />
+            <div className="stat">
+              <strong>4+</strong>
+              <span>Languages</span>
+            </div>
+            <div className="stat-divider" />
+            <div className="stat">
+              <strong>Roles</strong>
+              <span>Fine-grained access</span>
+            </div>
+          </motion.div>
+        </motion.section>
+      </div>
+
+      {/* IDE PREVIEW */}
+      <motion.section
+        className="ide-preview"
+        initial={{ opacity: 0, y: 60, rotateX: 12 }}
+        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="ide-glow" />
         <div className="ide-window">
           <div className="window-header">
             <div className="dot red"></div>
             <div className="dot yellow"></div>
             <div className="dot green"></div>
+            <span className="window-title">App.jsx — CodeSync</span>
           </div>
 
           <div className="ide-body">
@@ -165,16 +246,22 @@ export default function Landing() {
                 {"}"}
                 {"\n\n"}
                 <span className="kw">export default</span>{" "}
-                <span className="fn">App</span>;
+                <span className="fn">App</span>;<span className="caret">|</span>
               </pre>
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Features */}
       <section id="features" className="features">
-        <div className="features-header">
+        <motion.div
+          className="features-header"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="features-badge">FEATURES</span>
 
           <h2>Everything Needed To Collaborate</h2>
@@ -183,59 +270,54 @@ export default function Landing() {
             Everything your team needs to build software together in one
             workspace.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="feature-grid">
-          <div className="feature-card">
-            <FaFolderOpen />
-
-            <h3>Project Management</h3>
-
-            <p>
-              Create projects, organize folders and files, and keep everything
-              structured.
-            </p>
-          </div>
-
-          <div className="feature-card">
-            <FaUsers />
-
-            <h3>Team Collaboration</h3>
-
-            <p>
-              Invite teammates and manage viewer, editor and owner permissions.
-            </p>
-          </div>
-
-          <div className="feature-card">
-            <FaCode />
-
-            <h3>Real-Time Coding</h3>
-
-            <p>
-              Edit files together with live synchronization and collaborative
-              workflows.
-            </p>
-          </div>
-        </div>
+        <motion.div
+          className="feature-grid"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {features.map((f, i) => (
+            <motion.div
+              key={f.title}
+              className={`feature-card accent-${f.accent}`}
+              variants={fadeUp}
+              custom={i}
+              whileHover={{ y: -8 }}
+            >
+              <div className="feature-icon-wrap">{f.icon}</div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
 
       {/* CTA */}
+      <motion.section
+        className="cta"
+        initial={{ opacity: 0, scale: 0.96 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="cta-inner">
+          <h2>Ready To Build Together?</h2>
 
-      <section className="cta">
-        <h2>Ready To Build Together?</h2>
+          <p>
+            Launch your collaborative workspace and start coding with your team.
+          </p>
 
-        <p>
-          Launch your collaborative workspace and start coding with your team.
-        </p>
-
-        <button onClick={handleGetStarted} className="btn-primary">
-          Launch Workspace
-        </button>
-      </section>
+          <button onClick={handleGetStarted} className="btn-primary">
+            Launch Workspace
+            <FaArrowRight />
+          </button>
+        </div>
+      </motion.section>
 
       {/* FOOTER */}
-
       <footer className="footer">
         <div className="footer-content">
           <div>
@@ -244,7 +326,11 @@ export default function Landing() {
             <p>Collaborative coding workspace.</p>
           </div>
 
-          <a href="https://github.com/MukulSharma1203/CodeSync">
+          <a
+            href="https://github.com/MukulSharma1203/CodeSync"
+            className="footer-github"
+            aria-label="GitHub"
+          >
             <FaGithub />
           </a>
         </div>

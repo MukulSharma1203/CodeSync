@@ -13,7 +13,7 @@ const useCurrentUser = () => {
                 if (res.data.success) {
                     setUser(res.data.user);
                 }
-            } catch (error) {
+            } catch {
                 setUser(null);
             } finally {
                 setLoading(false);
@@ -21,6 +21,7 @@ const useCurrentUser = () => {
         };
 
         fetchUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };
 

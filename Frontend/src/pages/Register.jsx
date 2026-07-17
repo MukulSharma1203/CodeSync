@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FiPlus } from "react-icons/fi";
 import { FiZap, FiUsers, FiShare2 } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Register() {
   const { setUser } = useAuth();
@@ -83,10 +84,45 @@ function Register() {
     }
   };
 
+  const features = [
+    {
+      icon: <FiZap />,
+      title: "Real-Time Collaboration",
+      desc: "Code together instantly.",
+    },
+    {
+      icon: <FiUsers />,
+      title: "Role Management",
+      desc: "Owner, editor and viewer roles.",
+    },
+    {
+      icon: <FiShare2 />,
+      title: "Project Sharing",
+      desc: "Invite teammates easily.",
+    },
+  ];
+
   return (
     <div className="register-page">
-      {message && <div className={`toast ${messageType}`}>{message}</div>}
-      <header className="auth-header">
+      <AnimatePresence>
+        {message && (
+          <motion.div
+            className={`toast ${messageType}`}
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+          >
+            {message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.header
+        className="auth-header"
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
         <Link to="/" className="logo">
           CodeSync
         </Link>
@@ -94,10 +130,15 @@ function Register() {
         <Link to="/login" className="header-link">
           Login
         </Link>
-      </header>
+      </motion.header>
 
       <main className="register-container">
-        <div className="register-card">
+        <motion.div
+          className="register-card"
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="register-top">
             <h1>Create Account</h1>
             <p>Join your collaborative workspace</p>
@@ -193,42 +234,32 @@ function Register() {
           <div className="auth-footer">
             Already have an account? <Link to="/login">Login</Link>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="register-features">
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FiZap />
-            </div>
+        <motion.div
+          className="register-features"
+          initial="hidden"
+          animate="visible"
+          variants={{ visible: { transition: { staggerChildren: 0.12, delayChildren: 0.25 } } }}
+        >
+          {features.map((f) => (
+            <motion.div
+              key={f.title}
+              className="mini-feature"
+              variants={{
+                hidden: { opacity: 0, x: 30 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+              }}
+            >
+              <div className="feature-icon">{f.icon}</div>
 
-            <div>
-              <h3>Real-Time Collaboration</h3>
-              <p>Code together instantly.</p>
-            </div>
-          </div>
-
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FiUsers />
-            </div>
-
-            <div>
-              <h3>Role Management</h3>
-              <p>Owner, editor and viewer roles.</p>
-            </div>
-          </div>
-
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FiShare2 />
-            </div>
-
-            <div>
-              <h3>Project Sharing</h3>
-              <p>Invite teammates easily.</p>
-            </div>
-          </div>
-        </div>
+              <div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </main>
     </div>
   );

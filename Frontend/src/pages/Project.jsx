@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
   FaFolder,
@@ -14,6 +15,9 @@ import {
   FaPen,
   FaTrash,
   FaArrowLeft,
+  FaPlay,
+  FaFloppyDisk,
+  FaTerminal,
 } from "react-icons/fa6";
 
 import { SiPython, SiCplusplus, SiJavascript, SiOpenjdk } from "react-icons/si";
@@ -65,7 +69,7 @@ function Project() {
       const res = await api.get(`/project/get-folder-tree/${projectId}`);
 
       setTree(res.data.tree);
-    } catch (error) {
+    } catch {
       toast.error("Couldn't load project");
     } finally {
       setLoading(false);
@@ -73,7 +77,9 @@ function Project() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTree();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   useEffect(() => {
@@ -112,7 +118,7 @@ function Project() {
   }, []);
 
   useEffect(() => {
-    const refreshTree = (data) => {
+    const refreshTree = () => {
       fetchTree();
     };
 
@@ -127,6 +133,7 @@ function Project() {
       socket.off("item-renamed", refreshTree);
       socket.off("item-deleted", refreshTree);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   useEffect(() => {
@@ -310,6 +317,19 @@ function Project() {
     });
   };
 
+  const fileIcon = (node) => {
+    if (node.type === "folder") return <FaFolder className="folder-icon" />;
+    if (node.language === "python")
+      return <SiPython className="file-icon python-icon" />;
+    if (node.language === "cpp")
+      return <SiCplusplus className="file-icon cpp-icon" />;
+    if (node.language === "java")
+      return <SiOpenjdk className="file-icon java-icon" />;
+    if (node.language === "javascript")
+      return <SiJavascript className="file-icon js-icon" />;
+    return <FaFileCirclePlus className="file-icon" />;
+  };
+
   const renderTree = (nodes) => {
     return nodes.map((node) => (
       <div key={node._id} className="tree-node">
@@ -330,19 +350,7 @@ function Project() {
           }}
         >
           <>
-            {node.type === "folder" ? (
-              <FaFolder className="folder-icon" />
-            ) : node.language === "python" ? (
-              <SiPython className="file-icon python-icon" />
-            ) : node.language === "cpp" ? (
-              <SiCplusplus className="file-icon cpp-icon" />
-            ) : node.language === "java" ? (
-              <SiOpenjdk className="file-icon java-icon" />
-            ) : node.language === "javascript" ? (
-              <SiJavascript className="file-icon js-icon" />
-            ) : (
-              <FaFileCirclePlus className="file-icon" />
-            )}
+            {fileIcon(node)}
 
             <span className="tree-name">{node.name}</span>
 
@@ -378,15 +386,19 @@ function Project() {
   return (
     <div className="project-page">
       <header className="editor-header">
-        <button
-          className="toolbar-btn dashboard-btn"
-          onClick={() => navigate("/dashboard")}
-        >
-          <FaArrowLeft />
-          Dashboard
-        </button>
+        <div className="header-left">
+          <button
+            className="toolbar-btn dashboard-btn"
+            onClick={() => navigate("/dashboard")}
+          >
+            <FaArrowLeft />
+            Dashboard
+          </button>
 
-        <h1>CodeSync</h1>
+          <h1 className="project-logo">
+            CodeSync
+          </h1>
+        </div>
 
         <div className="header-right">
           <div className="online-users">
@@ -434,10 +446,21 @@ function Project() {
             className="sidebar-title"
             onClick={() => setSelectedFolder(null)}
           >
-            Explorer
+            <span>Explorer</span>
+            {selectedFolder && <span className="sidebar-hint">root</span>}
           </div>
 
-          {loading ? <p>Loading...</p> : renderTree(tree)}
+          <div className="sidebar-tree">
+            {loading ? (
+              <div className="sidebar-loading">
+                <span className="cs-spinner" />
+              </div>
+            ) : tree.length === 0 ? (
+              <p className="sidebar-empty">No files yet</p>
+            ) : (
+              renderTree(tree)
+            )}
+          </div>
         </aside>
 
         <main className="editor-panel">
@@ -445,13 +468,33 @@ function Project() {
             {selectedFile ? (
               <div className="editor-area">
                 <div className="editor-topbar">
-                  <span>{selectedFile.name}</span>
+                  <span className="editor-filename">
+                    {fileIcon(selectedFile)}
+                    {selectedFile.name}
+                  </span>
 
                   <div className="editor-buttons">
-                    <button onClick={handleSaveFile}>Save</button>
+                    <button className="save-btn" onClick={handleSaveFile}>
+                      <FaFloppyDisk />
+                      Save
+                    </button>
 
-                    <button onClick={handleRun} disabled={running}>
-                      {running ? "Running..." : "Run ▶"}
+                    <button
+                      className="run-btn"
+                      onClick={handleRun}
+                      disabled={running}
+                    >
+                      {running ? (
+                        <>
+                          <span className="cs-spinner" />
+                          Running
+                        </>
+                      ) : (
+                        <>
+                          <FaPlay />
+                          Run
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -471,11 +514,18 @@ function Project() {
                         automaticLayout: true,
                         wordWrap: "on",
                         scrollBeyondLastLine: false,
+                        padding: { top: 16 },
+                        fontFamily: "JetBrains Mono, monospace",
+                        smoothScrolling: true,
+                        cursorBlinking: "smooth",
                       }}
                     />
                   </div>
                   <div className="terminal-panel">
-                    <div className="terminal-header">Terminal</div>
+                    <div className="terminal-header">
+                      <FaTerminal />
+                      Terminal
+                    </div>
 
                     <textarea
                       className="terminal-input"
@@ -492,17 +542,21 @@ function Project() {
               </div>
             ) : (
               <div className="editor-placeholder">
-                <h2>Select a file</h2>
+                <div className="placeholder-icon">
+                  <FaFileCirclePlus />
+                </div>
+                <h2>Select a file to start coding</h2>
 
-                <p>Your Monaco editor will be placed here later.</p>
+                <p>Pick a file from the explorer or create a new one.</p>
               </div>
             )}
           </>
         </main>
       </div>
-      {showFolderModal && (
-        <div className="project-modal-overlay">
-          <div className="project-modal">
+
+      <AnimatePresence>
+        {showFolderModal && (
+          <ProjectModal onClose={() => setShowFolderModal(false)}>
             <h2>Create Folder</h2>
 
             <form onSubmit={handleCreateFolder}>
@@ -515,20 +569,23 @@ function Project() {
               />
 
               <div className="project-modal-buttons">
-                <button type="submit">Create</button>
-
-                <button type="button" onClick={() => setShowFolderModal(false)}>
+                <button
+                  type="button"
+                  className="modal-cancel"
+                  onClick={() => setShowFolderModal(false)}
+                >
                   Cancel
+                </button>
+                <button type="submit" className="modal-submit">
+                  Create
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+          </ProjectModal>
+        )}
 
-      {showFileModal && (
-        <div className="modal-overlay">
-          <div className="modal">
+        {showFileModal && (
+          <ProjectModal onClose={() => setShowFileModal(false)}>
             <h2>Create File</h2>
 
             <form onSubmit={handleCreateFile}>
@@ -553,20 +610,24 @@ function Project() {
                 <option value="javascript">JavaScript</option>
               </select>
 
-              <div className="modal-buttons">
-                <button type="submit">Create</button>
-
-                <button type="button" onClick={() => setShowFileModal(false)}>
+              <div className="project-modal-buttons">
+                <button
+                  type="button"
+                  className="modal-cancel"
+                  onClick={() => setShowFileModal(false)}
+                >
                   Cancel
+                </button>
+                <button type="submit" className="modal-submit">
+                  Create
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
-      {showRenameModal && (
-        <div className="modal-overlay">
-          <div className="modal">
+          </ProjectModal>
+        )}
+
+        {showRenameModal && (
+          <ProjectModal onClose={() => setShowRenameModal(false)}>
             <h2>Rename</h2>
 
             <form onSubmit={handleRename}>
@@ -591,18 +652,48 @@ function Project() {
                 </select>
               )}
 
-              <div className="modal-buttons">
-                <button type="submit">Save</button>
-
-                <button type="button" onClick={() => setShowRenameModal(false)}>
+              <div className="project-modal-buttons">
+                <button
+                  type="button"
+                  className="modal-cancel"
+                  onClick={() => setShowRenameModal(false)}
+                >
                   Cancel
+                </button>
+                <button type="submit" className="modal-submit">
+                  Save
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+          </ProjectModal>
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+// Animated modal wrapper for the project page
+function ProjectModal({ children, onClose }) {
+  return (
+    <motion.div
+      className="project-modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="project-modal"
+        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.97 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
   );
 }
 

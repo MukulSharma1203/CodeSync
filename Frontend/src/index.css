@@ -1,7 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap");
 @import "tailwindcss";
 
+/* ============================================================
+   CodeSync — Modern Design System
+   ============================================================ */
 
-*{
+:root {
+  /* Base surfaces */
+  --bg: #0a0a0d;
+  --bg-2: #101014;
+  --surface: rgba(23, 23, 28, 0.9);
+  --surface-2: #1a1a20;
+  --surface-solid: #141418;
+  --elevated: #1c1c22;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(139, 92, 246, 0.45);
+
+  /* Text */
+  --text: #f2f2f5;
+  --text-soft: #b6b6c0;
+  --text-dim: #83838f;
+  --text-faint: #5a5a66;
+
+  /* Accent — single refined violet */
+  --accent: #8b5cf6;
+  --accent-hover: #7c4ded;
+  --accent-active: #6d3fd6;
+  --accent-soft: rgba(139, 92, 246, 0.12);
+  --accent-softer: rgba(139, 92, 246, 0.08);
+  --accent-border: rgba(139, 92, 246, 0.32);
+  --accent-text: #c4b5fd;
+
+  /* Status */
+  --emerald: #34d399;
+  --amber: #fbbf24;
+  --rose: #fb7185;
+  --cyan: #22d3ee;
+
+  /* Legacy aliases → all resolve to the single accent / solid tokens */
+  --violet: var(--accent);
+  --indigo: var(--accent);
+  --fuchsia: var(--accent);
+  --text-muted: var(--text-dim);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 8px 24px rgba(139, 92, 246, 0.28);
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Sora", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Solid aliases (kept so existing references resolve to flat colors, no gradients) */
+  --grad-primary: var(--accent);
+  --grad-primary-soft: var(--accent-soft);
+  --grad-text: var(--accent-text);
+}
+
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -11,18 +78,301 @@ html {
   scroll-behavior: smooth;
 }
 
-body{
+body {
   min-height: 100vh;
-
-  background: #F8F4EE;
-
-  color: #2F241F;
-
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
   min-height: 100vh;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.32);
+  color: #fff;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+  background-clip: padding-box;
+}
+
+/* ============================================================
+   Global background — solid with a subtle grid + drifting glow
+   ============================================================ */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--bg);
+}
+.app-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% -10%, #000 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% -10%, #000 40%, transparent 85%);
+}
+
+/* A single, restrained accent glow that slowly drifts — no rainbow */
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+.aurora-1 {
+  width: 480px;
+  height: 480px;
+  background: rgba(139, 92, 246, 0.14);
+  top: -200px;
+  left: -140px;
+  animation: floatA 24s ease-in-out infinite;
+}
+.aurora-2 {
+  width: 420px;
+  height: 420px;
+  background: rgba(139, 92, 246, 0.08);
+  bottom: -220px;
+  right: -120px;
+  animation: floatB 30s ease-in-out infinite;
+}
+.aurora-3 {
+  display: none;
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+@keyframes floatA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 50px) scale(1.12); }
+}
+@keyframes floatB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-70px, -40px) scale(1.15); }
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.5); }
+  50% { box-shadow: 0 0 22px 4px rgba(139, 92, 246, 0.35); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+@keyframes caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   Reusable helpers
+   ============================================================ */
+.grad-text {
+  color: var(--accent-text);
+}
+
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border);
+}
+
+/* Primary accent button */
+.cs-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: var(--accent);
+  box-shadow: var(--shadow-accent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.cs-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.18) 50%, transparent 80%);
+  background-size: 200% 100%;
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.cs-btn:hover {
+  transform: translateY(-2px);
+  background: var(--accent-hover);
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.32);
+}
+.cs-btn:hover::after {
+  transform: translateX(100%);
+}
+.cs-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+.cs-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ghost / secondary button */
+.cs-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-soft);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-strong);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.cs-btn-ghost:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--border-glow);
+  transform: translateY(-2px);
+}
+
+/* Chip / badge */
+.cs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent-text);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+/* Inputs */
+.cs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cs-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+  letter-spacing: 0.01em;
+}
+.cs-input,
+.cs-textarea,
+.cs-select {
+  width: 100%;
+  padding: 13px 15px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--text);
+  background: rgba(10, 10, 18, 0.6);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  outline: none;
+}
+.cs-input::placeholder,
+.cs-textarea::placeholder {
+  color: var(--text-faint);
+}
+.cs-input:focus,
+.cs-textarea:focus,
+.cs-select:focus {
+  border-color: var(--violet);
+  background: rgba(10, 10, 18, 0.85);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.16);
+}
+.cs-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+.cs-select option {
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+/* Loading spinner */
+.cs-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Full-page centered loader */
+.cs-page-loader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text-soft);
+  gap: 18px;
+}
+.cs-page-loader .cs-spinner {
+  width: 44px;
+  height: 44px;
+  border-width: 4px;
+  border-top-color: var(--violet);
 }

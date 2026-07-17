@@ -3,7 +3,32 @@ import api from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { FaBolt, FaUsers, FaShareAlt, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaBolt,
+  FaUsers,
+  FaShareAlt,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+
+const features = [
+  {
+    icon: <FaBolt />,
+    title: "Instant Access",
+    desc: "Jump back into your projects immediately.",
+  },
+  {
+    icon: <FaUsers />,
+    title: "Real-Time Collaboration",
+    desc: "Work with teammates without interruptions.",
+  },
+  {
+    icon: <FaShareAlt />,
+    title: "Project Sharing",
+    desc: "Manage and share projects securely.",
+  },
+];
 
 function Login() {
   const { setUser } = useAuth();
@@ -65,9 +90,26 @@ function Login() {
 
   return (
     <div className="login-page">
-      {message && <div className={`toast ${messageType}`}>{message}</div>}
+      <AnimatePresence>
+        {message && (
+          <motion.div
+            className={`toast ${messageType}`}
+            initial={{ opacity: 0, y: -24, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -24, x: "-50%" }}
+            transition={{ duration: 0.3 }}
+          >
+            {message}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <header className="auth-header">
+      <motion.header
+        className="auth-header"
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
         <Link to="/" className="logo">
           CodeSync
         </Link>
@@ -75,10 +117,15 @@ function Login() {
         <Link to="/register" className="header-link">
           Register
         </Link>
-      </header>
+      </motion.header>
 
       <main className="login-container">
-        <div className="login-card">
+        <motion.div
+          className="login-card"
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="login-top">
             <h1>Welcome Back</h1>
             <p>Continue your collaborative coding journey</p>
@@ -122,7 +169,14 @@ function Login() {
             </div>
 
             <button type="submit" className="login-btn" disabled={loading}>
-              {loading ? "Signing In..." : "Login"}
+              {loading ? (
+                <>
+                  <span className="cs-spinner" />
+                  Signing In...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 
@@ -130,42 +184,40 @@ function Login() {
             Don't have an account?
             <Link to="/register">Register</Link>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="login-features">
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FaBolt />
-            </div>
+        <motion.div
+          className="login-features"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+          }}
+        >
+          {features.map((f) => (
+            <motion.div
+              key={f.title}
+              className="mini-feature"
+              variants={{
+                hidden: { opacity: 0, x: 30 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
+              whileHover={{ x: 6 }}
+            >
+              <div className="feature-icon">{f.icon}</div>
 
-            <div>
-              <h3>Instant Access</h3>
-              <p>Jump back into your projects immediately.</p>
-            </div>
-          </div>
-
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FaUsers />
-            </div>
-
-            <div>
-              <h3>Real-Time Collaboration</h3>
-              <p>Work with teammates without interruptions.</p>
-            </div>
-          </div>
-
-          <div className="mini-feature">
-            <div className="feature-icon">
-              <FaShareAlt />
-            </div>
-
-            <div>
-              <h3>Project Sharing</h3>
-              <p>Manage and share projects securely.</p>
-            </div>
-          </div>
-        </div>
+              <div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </main>
     </div>
   );

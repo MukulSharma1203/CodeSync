@@ -3,8 +3,18 @@ import api from "../api/axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { FaTrash, FaPen, FaSignInAlt, FaUsers, FaTimes } from "react-icons/fa";
+import {
+  FaTrash,
+  FaPen,
+  FaSignInAlt,
+  FaUsers,
+  FaTimes,
+  FaPlus,
+  FaRegCopy,
+  FaFolderOpen,
+} from "react-icons/fa";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Dashboard() {
   const { user, setUser } = useAuth();
@@ -55,6 +65,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProjects();
   }, []);
 
@@ -163,6 +174,7 @@ function Dashboard() {
 
     setConfirmModal(true);
   };
+
   const handleLeaveProject = (projectId) => {
     setConfirmTitle("Leave Project");
 
@@ -246,10 +258,26 @@ function Dashboard() {
     setConfirmModal(true);
   };
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.05, duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    }),
+  };
+
   return (
     <div className="dashboard-page">
-      <header className="dashboard-header">
-        <h1 className="logo">CodeSync</h1>
+      <motion.header
+        className="dashboard-header"
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <h1 className="logo">
+          CodeSync
+        </h1>
 
         <div className="header-right">
           <div className="user-menu">
@@ -260,28 +288,45 @@ function Dashboard() {
               onClick={() => setShowProfileMenu((prev) => !prev)}
             />
 
-            {showProfileMenu && (
-              <div className="profile-menu">
-                <button
-                  onClick={() => {
-                    setShowProfileMenu(false);
-                    handleLogout();
-                  }}
+            <AnimatePresence>
+              {showProfileMenu && (
+                <motion.div
+                  className="profile-menu"
+                  initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                  transition={{ duration: 0.18 }}
                 >
-                  Logout
-                </button>
-              </div>
-            )}
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <main className="dashboard-content">
-        <div className="dashboard-top">
-          <h2>Projects</h2>
+        <motion.div
+          className="dashboard-top"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="dashboard-heading">
+            <h2>Projects</h2>
+            <p>Manage and open your collaborative workspaces</p>
+          </div>
 
           <div className="dashboard-actions">
             <button className="join-btn" onClick={() => setShowJoinModal(true)}>
+              <FaSignInAlt />
               Join Project
             </button>
 
@@ -293,24 +338,48 @@ function Dashboard() {
                 setShowCreateModal(true);
               }}
             >
+              <FaPlus />
               Create Project
             </button>
           </div>
-        </div>
+        </motion.div>
 
         <hr className="divider" />
 
         {loading ? (
-          <h2>Loading...</h2>
+          <div className="dashboard-loading">
+            <span className="cs-spinner" />
+            <p>Loading your projects...</p>
+          </div>
         ) : projects.length === 0 ? (
-          <div className="empty-state">
+          <motion.div
+            className="empty-state"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="empty-icon">
+              <FaFolderOpen />
+            </div>
             <h2>No Projects Yet</h2>
 
             <p>Create your first project to begin collaborating.</p>
-          </div>
+
+            <button
+              className="create-btn"
+              onClick={() => {
+                setProjectName("");
+                setProjectDesc("");
+                setShowCreateModal(true);
+              }}
+            >
+              <FaPlus />
+              Create Project
+            </button>
+          </motion.div>
         ) : (
           <div className="projects-grid">
-            {projects.map((project) => {
+            {projects.map((project, index) => {
               const myCollaborator = project.collaborators.find(
                 (c) => c.user._id?.toString() === user._id.toString(),
               );
@@ -318,18 +387,32 @@ function Dashboard() {
               const isOwner = myCollaborator?.role === "owner";
 
               return (
-                <div key={project._id} className="project-card">
+                <motion.div
+                  key={project._id}
+                  className="project-card"
+                  variants={cardVariants}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ y: -6 }}
+                >
                   <div className="project-header">
-                    <div>
-                      <h3>{project.projectName}</h3>
-
-                      <p>{project.projectDesc || "No description provided"}</p>
+                    <div className="project-title">
+                      <div className="project-avatar">
+                        {project.projectName?.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3>{project.projectName}</h3>
+                        <span className={`role-pill role-${myCollaborator?.role}`}>
+                          {myCollaborator?.role}
+                        </span>
+                      </div>
                     </div>
                     <div className="project-actions">
                       {isOwner ? (
                         <>
                           <button
-                            className="edit-btn"
+                            className="icon-btn edit-btn"
                             onClick={() => openEditModal(project)}
                             title="Edit Project"
                           >
@@ -337,7 +420,7 @@ function Dashboard() {
                           </button>
 
                           <button
-                            className="danger-btn"
+                            className="icon-btn danger-btn"
                             onClick={() => handleDeleteProject(project._id)}
                             title="Delete Project"
                           >
@@ -346,8 +429,9 @@ function Dashboard() {
                         </>
                       ) : (
                         <button
-                          className="danger-btn"
+                          className="icon-btn danger-btn"
                           onClick={() => handleLeaveProject(project._id)}
+                          title="Leave Project"
                         >
                           <FaTimes />
                         </button>
@@ -355,57 +439,58 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="project-members">
-                    <button
-                      className="members-btn"
-                      onClick={() => {
-                        setMembersProject(project);
-                        setShowMembersModal(true);
-                      }}
-                    >
-                      <FaUsers />
-                    </button>
-                  </div>
+                  <p className="project-desc">
+                    {project.projectDesc || "No description provided"}
+                  </p>
 
                   <div className="project-footer">
-                    <div>
-                      <span className="project-role">
-                        {myCollaborator?.role}
-                      </span>
+                    <div className="footer-left">
+                      <button
+                        className="members-btn"
+                        onClick={() => {
+                          setMembersProject(project);
+                          setShowMembersModal(true);
+                        }}
+                        title="Collaborators"
+                      >
+                        <FaUsers />
+                        <span>{project.collaborators.length}</span>
+                      </button>
 
                       {isOwner && (
                         <div
                           className="invite-code"
                           onClick={() => {
                             navigator.clipboard.writeText(project.inviteCode);
-                            alert("Invite code copied!");
+                            toast.success("Invite code copied!");
                           }}
-                          title="Click to copy"
+                          title="Click to copy invite code"
                         >
+                          <FaRegCopy />
                           {project.inviteCode}
                         </div>
                       )}
                     </div>
 
-                    <div className="footer-buttons">
-                      <button
-                        className="open-btn"
-                        onClick={() => navigate(`/project/${project._id}`)}
-                      >
-                        <FaSignInAlt />
-                      </button>
-                    </div>
+                    <button
+                      className="open-btn"
+                      onClick={() => navigate(`/project/${project._id}`)}
+                    >
+                      Open
+                      <FaSignInAlt />
+                    </button>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         )}
 
-        {showCreateModal && (
-          <div className="modal-overlay">
-            <div className="modal">
+        <AnimatePresence>
+          {showCreateModal && (
+            <ModalShell onClose={() => setShowCreateModal(false)}>
               <h2>Create Project</h2>
+              <p className="modal-sub">Start a new collaborative workspace</p>
 
               <form onSubmit={handleCreateProject}>
                 <input
@@ -424,24 +509,25 @@ function Dashboard() {
                 />
 
                 <div className="modal-buttons">
-                  <button type="submit">Create</button>
-
                   <button
                     type="button"
+                    className="btn-cancel"
                     onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
+                  <button type="submit" className="btn-confirm">
+                    Create
+                  </button>
                 </div>
               </form>
-            </div>
-          </div>
-        )}
+            </ModalShell>
+          )}
 
-        {showJoinModal && (
-          <div className="modal-overlay">
-            <div className="modal">
+          {showJoinModal && (
+            <ModalShell onClose={() => setShowJoinModal(false)}>
               <h2>Join Project</h2>
+              <p className="modal-sub">Enter an invite code to collaborate</p>
 
               <form onSubmit={handleJoinProject}>
                 <input
@@ -453,21 +539,30 @@ function Dashboard() {
                 />
 
                 <div className="modal-buttons">
-                  <button type="submit">Join</button>
-
-                  <button type="button" onClick={() => setShowJoinModal(false)}>
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowJoinModal(false)}
+                  >
                     Cancel
+                  </button>
+                  <button type="submit" className="btn-confirm">
+                    Join
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
-        )}
+            </ModalShell>
+          )}
 
-        {showEditModal && (
-          <div className="modal-overlay">
-            <div className="modal">
+          {showEditModal && (
+            <ModalShell
+              onClose={() => {
+                setShowEditModal(false);
+                setSelectedProject(null);
+              }}
+            >
               <h2>Edit Project</h2>
+              <p className="modal-sub">Update your project details</p>
 
               <form onSubmit={handleUpdateProject}>
                 <input
@@ -486,10 +581,9 @@ function Dashboard() {
                 />
 
                 <div className="modal-buttons">
-                  <button type="submit">Save Changes</button>
-
                   <button
                     type="button"
+                    className="btn-cancel"
                     onClick={() => {
                       setShowEditModal(false);
                       setSelectedProject(null);
@@ -497,86 +591,97 @@ function Dashboard() {
                   >
                     Cancel
                   </button>
+                  <button type="submit" className="btn-confirm">
+                    Save Changes
+                  </button>
                 </div>
               </form>
-            </div>
-          </div>
-        )}
+            </ModalShell>
+          )}
 
-        {showMembersModal && membersProject && (
-          <div className="modal-overlay">
-            <div className="modal members-modal">
+          {showMembersModal && membersProject && (
+            <ModalShell
+              className="members-modal"
+              onClose={() => {
+                setShowMembersModal(false);
+                setMembersProject(null);
+              }}
+            >
               <h2>Collaborators</h2>
+              <p className="modal-sub">Manage who can access this project</p>
 
-              {membersProject.collaborators.map((member) => (
-                <div className="member-row" key={member.user._id}>
-                  <div className="member-info">
-                    <img
-                      src={member.user.avatar}
-                      alt=""
-                      className="member-avatar"
-                    />
+              <div className="members-list">
+                {membersProject.collaborators.map((member) => (
+                  <div className="member-row" key={member.user._id}>
+                    <div className="member-info">
+                      <img
+                        src={member.user.avatar}
+                        alt=""
+                        className="member-avatar"
+                      />
 
-                    <div className="member-text">
-                      <strong>{member.user.username}</strong>
+                      <div className="member-text">
+                        <strong>{member.user.username}</strong>
 
-                      <p>{member.role}</p>
+                        <p>{member.role}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  {member.role !== "owner" && (
-                    <div className="member-actions">
-                      <div className="role-buttons">
+                    {member.role !== "owner" && (
+                      <div className="member-actions">
+                        <div className="role-buttons">
+                          <button
+                            className={
+                              member.role === "viewer" ? "role-active" : ""
+                            }
+                            onClick={() =>
+                              handleRoleChange(
+                                membersProject._id,
+                                member.user._id,
+                                "viewer",
+                              )
+                            }
+                          >
+                            Viewer
+                          </button>
+
+                          <button
+                            className={
+                              member.role === "editor" ? "role-active" : ""
+                            }
+                            onClick={() =>
+                              handleRoleChange(
+                                membersProject._id,
+                                member.user._id,
+                                "editor",
+                              )
+                            }
+                          >
+                            Editor
+                          </button>
+                        </div>
+
                         <button
-                          className={
-                            member.role === "viewer" ? "role-active" : ""
-                          }
+                          className="icon-btn danger-btn"
                           onClick={() =>
-                            handleRoleChange(
+                            handleDeleteCollaborator(
                               membersProject._id,
                               member.user._id,
-                              "viewer",
                             )
                           }
                         >
-                          Viewer
-                        </button>
-
-                        <button
-                          className={
-                            member.role === "editor" ? "role-active" : ""
-                          }
-                          onClick={() =>
-                            handleRoleChange(
-                              membersProject._id,
-                              member.user._id,
-                              "editor",
-                            )
-                          }
-                        >
-                          Editor
+                          <FaTrash />
                         </button>
                       </div>
-
-                      <button
-                        className="danger-btn"
-                        onClick={() =>
-                          handleDeleteCollaborator(
-                            membersProject._id,
-                            member.user._id,
-                          )
-                        }
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                ))}
+              </div>
 
               <div className="modal-buttons">
                 <button
                   type="button"
+                  className="btn-cancel"
                   onClick={() => {
                     setShowMembersModal(false);
                     setMembersProject(null);
@@ -585,20 +690,22 @@ function Dashboard() {
                   Close
                 </button>
               </div>
-            </div>
-          </div>
-        )}
-        {confirmModal && (
-          <div className="modal-overlay">
-            <div className="modal confirm-modal">
+            </ModalShell>
+          )}
+
+          {confirmModal && (
+            <ModalShell
+              className="confirm-modal"
+              onClose={() => setConfirmModal(false)}
+            >
               <h2>{confirmTitle}</h2>
 
-              <p>{confirmMessage}</p>
+              <p className="modal-sub">{confirmMessage}</p>
 
               <div className="modal-buttons">
                 <button
                   type="button"
-                  className="cancel-btn"
+                  className="btn-cancel"
                   onClick={() => setConfirmModal(false)}
                 >
                   Cancel
@@ -612,11 +719,36 @@ function Dashboard() {
                   Confirm
                 </button>
               </div>
-            </div>
-          </div>
-        )}
+            </ModalShell>
+          )}
+        </AnimatePresence>
       </main>
     </div>
+  );
+}
+
+// Reusable animated modal wrapper
+function ModalShell({ children, onClose, className = "" }) {
+  return (
+    <motion.div
+      className="modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className={`modal ${className}`}
+        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.97 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
   );
 }
 

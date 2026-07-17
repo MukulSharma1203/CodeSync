@@ -1,124 +1,103 @@
-:root {
-  --bg: #161320;
-  --surface: #242035;
-  --surface2: #2b2640;
-
-  --text: #f5f2ff;
-  --text2: #c8c0e6;
-
-  --purple: #8b5cf6;
-  --purple2: #6d4ed8;
-
-  --orange: #f38b62;
-}
-
+/* ============================================================
+   NotFound — modern
+   ============================================================ */
 .notfound-page {
+  position: relative;
   min-height: 100vh;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  padding: 40px;
-
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(139, 92, 246, 0.16),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(243, 139, 98, 0.1),
-      transparent 36%
-    ),
-    linear-gradient(180deg, #161320, #13111d);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--text);
+  overflow: hidden;
 }
 
 .notfound-card {
-  width: min(600px, 100%);
-
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  gap: 14px;
+  padding: 56px 40px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
 
-  padding: 60px 50px;
-
-  border-radius: 32px;
-
-  background: linear-gradient(180deg, #242035, #1d1a2d);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+.notfound-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad-primary);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .error-code {
-  font-size: 120px;
-
-  font-weight: 900;
-
+  font-family: var(--font-display);
+  font-size: 108px;
+  font-weight: 800;
   line-height: 1;
-
-  background: linear-gradient(135deg, #8b5cf6, #69a6ff, #f38b62);
-
+  letter-spacing: -0.04em;
+  background: var(--grad-text);
   -webkit-background-clip: text;
-
-  color: transparent;
-
-  margin-bottom: 10px;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .error-icon {
-  display: block;
-
-  margin: 0 auto 28px;
-
-  font-size: 58px;
-
-  color: #8b5cf6;
+  font-size: 34px;
+  color: var(--violet);
+  filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.6));
 }
 
 .notfound-card h1 {
-  color: white;
-
-  font-size: 42px;
-
-  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
 }
 
 .notfound-card p {
-  color: var(--text2);
-
-  line-height: 1.8;
-
-  margin-bottom: 40px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 340px;
 }
 
 .home-btn {
+  margin-top: 12px;
   display: inline-flex;
-
   align-items: center;
-
-  gap: 12px;
-
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
   text-decoration: none;
-
-  color: white;
-
-  font-weight: 700;
-
-  padding: 16px 34px;
-
-  border-radius: 16px;
-
-  background: linear-gradient(135deg, #8b5cf6, #6d4ed8);
-
-  transition: 0.3s;
+  background: var(--grad-primary);
+  background-size: 180% 180%;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    background-position 0.6s ease;
 }
-
 .home-btn:hover {
   transform: translateY(-3px);
-
-  box-shadow: 0 18px 40px rgba(109, 78, 216, 0.42);
+  background: var(--accent-hover);
+  box-shadow: 0 16px 40px rgba(139, 92, 246, 0.5);
+}
+.home-btn:active {
+  transform: translateY(0) scale(0.98);
 }
