@@ -6,9 +6,14 @@ const liveFiles = new Map();
 const onlineUsers = new Map();
 
 export const initializeSocket = (server) => {
+  const allowedOrigins = (process.env.CORS_ORIGIN || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+
   io = new Server(server, {
     cors: {
-      origin: process.env.CORS_ORIGIN,
+      origin: allowedOrigins,
       credentials: true,
     },
   });
