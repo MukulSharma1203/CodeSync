@@ -22,6 +22,7 @@ export const initializeSocket = (server) => {
     
 
     socket.on("join-project", async ({ projectId, userId }) => {
+      liveFiles.clear();
       await socket.join(projectId);
 
       socket.projectId = projectId;
