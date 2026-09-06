@@ -136,9 +136,3 @@ Frontend:
 - `DELETE /api/project/delete-file-folder/:projectId/:fileId` - Delete an item
 - `POST /api/project/save-file-content/:projectId/:fileId` - Save code content
 - `POST /api/project/run-file/:projectId/:fileId` - Run a supported file
-
-## Notes
-
-- Access is cookie-based, so the frontend uses `withCredentials: true`.
-- Socket events keep project members and file content in sync across clients.
-- The app expects MongoDB, Cloudinary, and token secrets to be configured before login and collaboration features will work.
