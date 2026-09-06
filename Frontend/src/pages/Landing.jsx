@@ -19,10 +19,13 @@ export default function Landing() {
     try {
       await api.post("/users/logout");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Logout failed");
+      if (err.response?.status !== 401) {
+        toast.error(err.response?.data?.message || "Logout failed");
+      }
     } finally {
+      sessionStorage.setItem("codesync-logged-out", "true");
       setUser(null);
-      navigate("/");
+      window.location.replace("/");
     }
   };
 

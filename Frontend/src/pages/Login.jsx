@@ -39,6 +39,7 @@ function Login() {
         password: formData.password,
       });
 
+      sessionStorage.removeItem("codesync-logged-out");
       setUser(response.data.user);
       showMessage("Login successful", "success");
       setTimeout(() => navigate("/dashboard"), 1000);

@@ -61,6 +61,7 @@ function Register() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      sessionStorage.removeItem("codesync-logged-out");
       setUser(response.data.user);
       showMessage("Account created successfully", "success");
       setTimeout(() => navigate("/dashboard"), 1000);

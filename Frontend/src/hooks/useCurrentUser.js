@@ -7,6 +7,12 @@ const useCurrentUser = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
+            if (sessionStorage.getItem("codesync-logged-out") === "true") {
+                setUser(null);
+                setLoading(false);
+                return;
+            }
+
             try {
                 const res = await api.get("/users/current-user");
 

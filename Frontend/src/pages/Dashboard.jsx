@@ -73,8 +73,11 @@ function Dashboard() {
     try {
       await api.post("/users/logout");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Logout failed");
+      if (error.response?.status !== 401) {
+        toast.error(error.response?.data?.message || "Logout failed");
+      }
     } finally {
+      sessionStorage.setItem("codesync-logged-out", "true");
       setShowProfileMenu(false);
       setUser(null);
       window.location.href = "/";
