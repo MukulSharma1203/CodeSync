@@ -1,8 +1,6 @@
 import { io } from "socket.io-client";
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
-
-const socket = io(backendUrl.replace("/api", ""), {
+const socket = io(import.meta.env.VITE_BACKEND_URL.replace("/api", ""), {
     withCredentials: true,
 });
 
