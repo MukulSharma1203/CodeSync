@@ -1,1 +1,13 @@
-{ "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }] }
+{
+	"routes": [
+		{
+			"src": "/api/(.*)",
+			"dest": "https://codesync-backend-vkos.onrender.com/api/$1"
+		},
+		{
+			"src": "/[^.]+",
+			"dest": "/",
+			"status": 200
+		}
+	]
+}
