@@ -321,6 +321,7 @@
   right: 40%;
   top:-6.7%;
   width: min(15rem, 21vw);
+  transform: translateY(calc(50% - 50%));
 }
 
 .register-toast {
