@@ -624,3 +624,128 @@
     align-items: stretch;
   }
 }
+
+.dashboard-page {
+  min-height: 100svh;
+  background:
+    radial-gradient(circle at 86% 8%, rgba(255, 190, 77, 0.08), transparent 28rem),
+    repeating-radial-gradient(ellipse 90% 42% at 76% 0%, transparent 0 3rem, rgba(255, 255, 255, 0.025) 3.1rem 3.22rem, transparent 3.34rem 6.3rem),
+    #090909;
+}
+
+.dashboard-header {
+  padding-block: 18px;
+  background: rgba(9, 9, 9, 0.82);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.dashboard-header .logo {
+  letter-spacing: -0.06em;
+}
+
+.dashboard-header .logo::first-letter {
+  color: #ffbe4d;
+}
+
+.user-menu .avatar {
+  border-color: rgba(255, 190, 77, 0.8);
+}
+
+.dashboard-content {
+  max-width: 1280px;
+  padding-top: clamp(38px, 6vw, 72px);
+}
+
+.dashboard-heading h2 {
+  letter-spacing: -0.06em;
+}
+
+.dashboard-heading p {
+  color: #98989e;
+}
+
+.join-btn,
+.create-btn,
+.open-btn,
+.btn-confirm,
+.role-buttons .role-active {
+  border-radius: 10px;
+}
+
+.join-btn:hover {
+  border-color: rgba(255, 190, 77, 0.55);
+  background: rgba(255, 190, 77, 0.1);
+}
+
+.create-btn,
+.open-btn,
+.btn-confirm,
+.role-buttons .role-active {
+  color: #17120a;
+  background: #ffbd4e;
+  box-shadow: 0 10px 24px rgba(255, 171, 51, 0.16);
+}
+
+.create-btn:hover,
+.open-btn:hover,
+.btn-confirm:hover,
+.role-buttons .role-active:hover {
+  color: #17120a;
+  background: #ffd078;
+  box-shadow: 0 14px 30px rgba(255, 171, 51, 0.24);
+}
+
+.divider {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.empty-state,
+.project-card {
+  background: rgba(15, 15, 15, 0.76);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+}
+
+.empty-state {
+  min-height: 300px;
+  justify-content: center;
+  border-style: solid;
+}
+
+.empty-icon,
+.project-avatar {
+  color: #17120a;
+  background: #ffbd4e;
+  box-shadow: 0 10px 26px rgba(255, 171, 51, 0.18);
+}
+
+.project-card:hover {
+  border-color: rgba(255, 190, 77, 0.42);
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.3);
+}
+
+.project-title h3 {
+  letter-spacing: -0.03em;
+}
+
+.icon-btn:hover,
+.members-btn:hover {
+  border-color: rgba(255, 190, 77, 0.55);
+  background: rgba(255, 190, 77, 0.1);
+}
+
+.modal,
+.member-row {
+  background: rgba(15, 15, 15, 0.94);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.modal input:focus,
+.modal textarea:focus {
+  border-color: #ffbe4d;
+  box-shadow: 0 0 0 4px rgba(255, 190, 77, 0.14);
+}
+
+.btn-cancel:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}

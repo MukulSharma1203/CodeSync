@@ -545,3 +545,154 @@
     width: 170px;
   }
 }
+
+.project-page {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(255, 190, 77, 0.07), transparent 24rem),
+    #090909;
+}
+
+.editor-header {
+  padding: 14px 22px;
+  background: rgba(9, 9, 9, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.project-logo {
+  letter-spacing: -0.05em;
+}
+
+.project-logo::first-letter {
+  color: #ffbe4d;
+}
+
+.toolbar-btn {
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.toolbar-btn:hover {
+  border-color: rgba(255, 190, 77, 0.55);
+  background: rgba(255, 190, 77, 0.1);
+}
+
+.file-sidebar {
+  width: 276px;
+  background: rgba(13, 13, 13, 0.9);
+  border-right-color: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-title {
+  padding-block: 18px;
+  color: #b4b4ba;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-hint {
+  color: #ffcf73;
+  background: rgba(255, 190, 77, 0.1);
+  border-color: rgba(255, 190, 77, 0.3);
+}
+
+.tree-item.selected-folder {
+  color: #fff;
+  background: rgba(255, 190, 77, 0.1);
+}
+
+.tree-item.selected-folder::before {
+  background: #ffbe4d;
+}
+
+.tree-action:hover {
+  color: #ffbe4d;
+}
+
+.editor-panel {
+  background: #0c0c0c;
+}
+
+.editor-topbar {
+  padding-inline: 22px;
+  background: #101010;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.save-btn:hover {
+  border-color: rgba(255, 190, 77, 0.4);
+  background: rgba(255, 190, 77, 0.08);
+}
+
+.run-btn {
+  color: #17120a;
+  background: #ffbd4e;
+  box-shadow: 0 8px 20px rgba(255, 171, 51, 0.16);
+}
+
+.run-btn:hover:not(:disabled) {
+  color: #17120a;
+  background: #ffd078;
+  box-shadow: 0 12px 26px rgba(255, 171, 51, 0.24);
+}
+
+.terminal-panel {
+  background: #0a0a0a;
+  border-left-color: rgba(255, 255, 255, 0.12);
+}
+
+.terminal-header {
+  color: #bdbdc2;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.terminal-header svg,
+.terminal-output {
+  color: #ffbe4d;
+}
+
+.terminal-input:focus {
+  background: rgba(255, 190, 77, 0.045);
+}
+
+.placeholder-icon {
+  color: #ffbe4d;
+  background: rgba(255, 190, 77, 0.08);
+  border-color: rgba(255, 190, 77, 0.28);
+}
+
+.project-modal-overlay {
+  background: rgba(4, 4, 4, 0.78);
+}
+
+.project-modal {
+  background: #111;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.project-modal input:focus,
+.project-modal select:focus {
+  border-color: #ffbe4d;
+  box-shadow: 0 0 0 4px rgba(255, 190, 77, 0.14);
+}
+
+.modal-submit {
+  color: #17120a;
+  background: #ffbd4e;
+  box-shadow: 0 8px 20px rgba(255, 171, 51, 0.16);
+}
+
+.modal-submit:hover {
+  background: #ffd078;
+  box-shadow: 0 12px 26px rgba(255, 171, 51, 0.24);
+}
+
+@media (max-width: 900px) {
+  .file-sidebar {
+    width: 230px;
+  }
+}
+
+@media (max-width: 640px) {
+  .file-sidebar {
+    width: 188px;
+  }
+}
