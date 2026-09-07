@@ -7,6 +7,7 @@
   display: grid;
   place-items: center;
   padding: 24px;
+  background: #090909;
   color: var(--text);
   overflow: hidden;
 }
@@ -53,11 +54,11 @@
   gap: 14px;
   padding: 56px 40px;
   border-radius: var(--r-xl);
-  background: var(--surface);
+  background: rgba(15, 15, 15, 0.88);
   backdrop-filter: blur(22px) saturate(140%);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
 }
 
 .notfound-card::before {
@@ -66,11 +67,11 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: var(--grad-primary);
+  background: #ffbd4e;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0.4;
+  opacity: 0.55;
   pointer-events: none;
 }
 
@@ -80,16 +81,14 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffbd4e;
+  text-shadow: 0 10px 32px rgba(255, 171, 51, 0.18);
 }
 
 .error-icon {
   font-size: 34px;
-  color: var(--violet);
-  filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.6));
+  color: #ffbe4d;
+  filter: drop-shadow(0 0 16px rgba(255, 190, 77, 0.35));
 }
 
 .notfound-card h1 {
@@ -115,18 +114,17 @@
   border-radius: var(--r-md);
   font-size: 15px;
   font-weight: 600;
-  color: #fff;
+  color: #17120a;
   text-decoration: none;
-  background: var(--grad-primary);
-  background-size: 180% 180%;
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  background: #ffbd4e;
+  box-shadow: 0 10px 30px rgba(255, 171, 51, 0.18);
   transition: transform 0.25s ease, box-shadow 0.25s ease,
     background-position 0.6s ease;
 }
 .home-btn:hover {
   transform: translateY(-3px);
-  background: var(--accent-hover);
-  box-shadow: 0 16px 40px rgba(139, 92, 246, 0.5);
+  background: #ffd078;
+  box-shadow: 0 16px 40px rgba(255, 171, 51, 0.24);
 }
 .home-btn:active {
   transform: translateY(0) scale(0.98);
