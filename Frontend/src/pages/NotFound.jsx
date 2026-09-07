@@ -6,6 +6,25 @@ import { motion } from "framer-motion";
 function NotFound() {
   return (
     <div className="notfound-page">
+      <div className="notfound-cats" aria-hidden="true">
+        <motion.img
+          src="/register/catNerd.svg"
+          alt=""
+          className="notfound-cat notfound-cat-nerd"
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.25, duration: 0.55 }}
+        />
+        <motion.img
+          src="/login/swagCat.svg"
+          alt=""
+          className="notfound-cat notfound-cat-swag"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.35, duration: 0.55 }}
+        />
+      </div>
+
       <motion.div
         className="notfound-card"
         initial={{ opacity: 0, y: 30, scale: 0.96 }}
