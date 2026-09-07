@@ -11,7 +11,7 @@
     repeating-radial-gradient(
       ellipse 90% 42% at 76% 0%,
       transparent 0 3rem,
-      rgba(255, 190, 77, 0.09) 3.1rem 3.22rem,
+      rgba(255, 255, 255, 0.08) 3.1rem 3.22rem,
       transparent 3.34rem 6.3rem
     ),
     #090909;
@@ -88,7 +88,7 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: #ffbd4e;
+  color: #f6c15f;
   text-shadow: 0 10px 32px rgba(255, 171, 51, 0.22);
 }
 
